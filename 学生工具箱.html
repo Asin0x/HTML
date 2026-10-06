@@ -1,0 +1,2243 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><title>工具箱</title><style>
+:root{--bg:#0d1117;--bg2:#131922;--bg3:#1a2230;--line:#242e3c;--fg:#e6edf3;--dim:#8b98a9;--accent:#4c8dff;--green:#3fd39b;--danger:#ff7b7b;--warn:#ffc46b;--radius:12px;}
+*{box-sizing:border-box;}html,body{height:100%;margin:0;}
+body{background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
+button,input,select,textarea{font-family:inherit;}
+#app{display:flex;height:100%;overflow:hidden;}
+.sidebar{width:228px;flex:0 0 228px;background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;transition:margin-left .25s,transform .25s;z-index:50;}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 14px 12px;font-size:15px;font-weight:600;letter-spacing:.3px;}
+.brand .logo{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--green));display:grid;place-items:center;font-size:13px;}
+#nav{flex:1;overflow-y:auto;padding:2px 8px 18px;}
+.nav-divider{height:1px;background:var(--line);margin:4px 6px 8px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;margin:2px 0;color:var(--dim);text-decoration:none;border-radius:8px;font-size:13.5px;border-left:2px solid transparent;transition:background .15s,color .15s;}
+.nav-item:hover{background:rgba(255,255,255,.05);color:var(--fg);}
+.nav-item.active{background:rgba(76,141,255,.14);color:#a9c9ff;border-left-color:var(--accent);}
+.nav-home{padding-left:10px;}
+.item-icon{font-size:14px;width:18px;text-align:center;flex:0 0 18px;}
+.sidebar-footer{padding:10px 14px;color:#5c6879;font-size:11px;}
+body.sb-hide .sidebar{margin-left:-228px;}
+.content{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;flex:0 0 auto;background:var(--bg2);}
+.top-btn{background:transparent;border:0;color:var(--dim);border-radius:8px;width:32px;height:32px;font-size:15px;cursor:pointer;display:grid;place-items:center;transition:.15s;}
+.top-btn:hover{color:var(--fg);background:rgba(255,255,255,.06);}
+.top-btn.on{color:var(--accent);background:rgba(76,141,255,.14);}
+.topbar-spacer{flex:1;}
+.view{flex:1;overflow-y:auto;padding:14px 16px;}
+body.sb-hide .view{padding:8px 10px;}
+.home{max-width:1020px;margin:0 auto;}
+.home-head{padding:6px 2px 22px;}
+.home-head h1{font-size:24px;font-weight:650;margin:0 0 6px;letter-spacing:.4px;background:linear-gradient(100deg,#e6edf3 30%,#7fa8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.home-head p{margin:0;color:var(--dim);font-size:13px;}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:14px;align-items:start;}
+.home-card{position:relative;overflow:hidden;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;transition:border-color .2s,transform .2s;}
+.home-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--green));opacity:.3;transition:opacity .25s;}
+.home-card:hover{border-color:#2f3d4e;transform:translateY(-1px);}
+.home-card:hover::before{opacity:.9;}
+.home-card-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
+.home-ico{width:36px;height:36px;flex:0 0 36px;border-radius:10px;display:grid;place-items:center;font-size:15px;color:#a9c9ff;background:linear-gradient(135deg,rgba(76,141,255,.22),rgba(63,211,155,.16));border:1px solid rgba(76,141,255,.22);}
+.home-card h2{margin:1px 0 3px;font-size:15px;font-weight:600;}
+.home-card .desc{margin:0;font-size:12.5px;color:var(--dim);}
+.home-card a.open{display:inline-block;margin-top:8px;font-size:12.5px;color:#9fc3ff;text-decoration:none;}
+.home-card a.open:hover{color:#cfe0ff;}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.btn{padding:9px 16px;border-radius:9px;border:1px solid var(--line);background:var(--bg3);color:var(--fg);font-size:13.5px;cursor:pointer;transition:background .15s,border-color .15s;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;}
+.btn:hover{background:#232c38;border-color:#33404f;}
+.btn:active{transform:scale(.98);}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.btn.primary:hover{background:#3d7ce8;}
+.btn.ghost{background:transparent;color:var(--dim);}
+.btn.ghost:hover{color:var(--fg);border-color:#3a4553;}
+.btn-sm{padding:6px 11px;font-size:12.5px;border-radius:7px;}
+.input,.select{width:100%;padding:8px 12px;background:var(--bg3);border:1px solid var(--line);border-radius:8px;outline:none;color:var(--fg);font-size:13.5px;transition:border-color .15s;}
+.input:focus,.select:focus{border-color:var(--accent);}
+.label{display:block;font-size:12.5px;color:var(--dim);margin-bottom:6px;}
+.form-row{margin-bottom:12px;}
+.form-row-inline{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+.form-row-inline>*{flex:1;min-width:80px;}
+.card-title{font-size:15px;font-weight:600;margin-bottom:12px;}
+.plot{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+body.sb-hide .plot,body.sb-hide .solver,body.sb-hide .mol,body.sb-hide .phys{max-width:none;}
+.plot-main{padding:0;overflow:hidden;}
+.plot-cw{position:relative;background:var(--bg);}
+.plot-cw canvas{display:block;width:100%;height:340px;cursor:grab;touch-action:none;}
+.plot-cw canvas:active{cursor:grabbing;}
+.plot-sliders{padding:10px 16px 4px;background:var(--bg2);}
+.plot-param-item{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.plot-param-name{width:30px;font-family:Consolas,monospace;font-weight:600;color:var(--accent);font-size:13px;flex:0 0 30px;}
+.plot-param-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer;}
+.plot-param-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border-radius:50%;cursor:pointer;box-shadow:0 0 0 3px rgba(76,141,255,.18);}
+.plot-param-slider::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border-radius:50%;cursor:pointer;border:0;}
+.plot-param-value{width:54px;text-align:right;font-family:Consolas,monospace;font-size:12.5px;color:var(--dim);flex:0 0 54px;}
+.plot-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 16px 14px;background:var(--bg2);}
+.plot-bar .input{width:66px;}
+.plot-modes{display:flex;gap:6px;padding:12px 16px 0;}
+.plot-mode{padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg3);color:var(--dim);font-size:12.5px;cursor:pointer;transition:.15s;}
+.plot-mode:hover{color:var(--fg);}
+.plot-mode.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.plot-func-item{display:flex;gap:10px;align-items:center;margin-bottom:8px;padding:8px;background:var(--bg3);border-radius:8px;}
+.plot-func-color{width:16px;height:16px;border-radius:50%;flex-shrink:0;cursor:pointer;border:1px solid rgba(255,255,255,.2);}
+.plot-func-input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-family:Consolas,monospace;font-size:13px;outline:none;color:var(--fg);min-width:0;}
+.plot-func-input:focus{border-color:var(--accent);}
+.plot-func-remove{color:var(--danger);padding:4px 8px;border-radius:6px;background:transparent;cursor:pointer;font-size:16px;border:0;}
+.plot-func-remove:hover{background:rgba(255,123,123,.12);}
+.plot-presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.plot-preset{padding:5px 10px;font-size:12px;background:var(--bg3);border-radius:6px;color:var(--dim);cursor:pointer;border:1px solid var(--line);transition:.15s;}
+.plot-preset:hover{color:var(--fg);border-color:#3a4553;}
+.solver{max-width:780px;margin:0 auto;}
+.solver-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap;}
+.solver-tab{padding:9px 14px;color:var(--dim);border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s;cursor:pointer;font-size:13.5px;background:transparent;border-top:0;border-left:0;border-right:0;font-family:inherit;}
+.solver-tab:hover{color:var(--fg);}
+.solver-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.solver-pane{display:none;}
+.solver-pane.active{display:block;}
+.solver-result{background:var(--bg3);border:1px solid var(--line);border-radius:10px;padding:16px;margin-top:16px;min-height:50px;}
+.solver-result-title{font-size:12.5px;color:var(--dim);margin-bottom:8px;letter-spacing:.5px;}
+.solver-result-content{font-family:Consolas,monospace;font-size:14px;line-height:1.8;}
+.solver-system-row{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.solver-coeff{width:64px;text-align:center;}
+.mol{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.mol-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+.mol-tab{padding:7px 13px;border-radius:9px;border:1px solid var(--line);background:var(--bg2);color:var(--dim);font-size:12.5px;cursor:pointer;transition:background .15s,border-color .15s,color .15s;user-select:none;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
+.mol-tab:hover{color:var(--fg);border-color:#33404f;background:#1a2230;}
+.mol-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.mol-stage{position:relative;width:100%;height:clamp(340px,62vh,600px);background:radial-gradient(ellipse at 50% 35%,#18212e 0%,#0a0f16 78%);border:1px solid var(--line);border-radius:14px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;}
+.mol-stage canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none;}
+.mol-stage canvas.dragging{cursor:grabbing;}
+.mol-info{position:absolute;top:12px;left:14px;pointer-events:none;max-width:62%;}
+.mol-info .name{font-size:16px;font-weight:650;color:var(--fg);text-shadow:0 2px 10px rgba(0,0,0,.8);}
+.mol-info .formula{font-size:12.5px;color:#9fc3ff;margin-top:3px;font-family:Consolas,monospace;text-shadow:0 2px 10px rgba(0,0,0,.8);}
+.mol-info .detail{font-size:11.5px;color:#7b8697;margin-top:4px;text-shadow:0 2px 10px rgba(0,0,0,.8);line-height:1.6;}
+.mol-hint{position:absolute;bottom:10px;left:14px;font-size:11px;color:#4d5765;pointer-events:none;}
+.mol-tools{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px;}
+.mol-tools button{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(16,23,33,.78);color:var(--fg);font-size:14px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .15s,border-color .15s,transform .08s;display:grid;place-items:center;-webkit-tap-highlight-color:transparent;}
+.mol-tools button:hover{background:rgba(76,141,255,.22);border-color:rgba(76,141,255,.45);}
+.mol-tools button:active{transform:scale(.92);}
+.mol-tools button.on{background:rgba(76,141,255,.3);border-color:rgba(76,141,255,.6);color:#cfe0ff;}
+.mol-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;font-size:12.5px;}
+.mol-controls label{display:flex;align-items:center;gap:6px;color:var(--dim);cursor:pointer;user-select:none;padding:5px 8px;border-radius:8px;transition:background .15s,color .15s;font-size:12.5px;}
+.mol-controls label:hover{background:rgba(255,255,255,.04);color:var(--fg);}
+.mol-controls input[type="checkbox"]{width:15px;height:15px;accent-color:var(--accent);cursor:pointer;}
+.mol-controls .spacer{flex:1;}
+.mol-controls button.ctl{padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:12.5px;cursor:pointer;transition:.15s;}
+.mol-controls button.ctl:hover{color:var(--fg);border-color:#3a4553;}
+.mol-controls button.ctl.on{background:rgba(76,141,255,.18);border-color:rgba(76,141,255,.45);color:#cfe0ff;}
+.mol-custom{display:none;padding:14px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;grid-template-columns:1fr 1fr;gap:12px;}
+.mol-custom.open{display:grid;}
+.mc-field{display:flex;flex-direction:column;gap:5px;}
+.mc-field label{font-size:11.5px;color:var(--dim);}
+.mc-field input{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg3);color:var(--fg);font-size:13px;outline:none;transition:border-color .15s;}
+.mc-field input:focus{border-color:var(--accent);}
+.mc-field.full{grid-column:1/-1;}
+.mc-actions{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end;}
+.mc-msg{grid-column:1/-1;font-size:12px;color:var(--dim);min-height:16px;}
+.mc-msg.error{color:var(--danger);}
+.mc-msg.ok{color:var(--green);}
+.phys{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.phys-card{padding:0;overflow:hidden;position:relative;}
+.phys-card canvas{display:block;width:100%;height:clamp(340px,60vh,560px);background:radial-gradient(ellipse at 50% 40%,#141c28 0%,#0a0f16 80%);cursor:grab;touch-action:none;}
+.phys-card canvas:active{cursor:grabbing;}
+.phys-bar{padding:12px 14px;}
+.ph-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.ph-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font-size:12.5px;color:var(--dim);}
+.ph-chk{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 9px;border-radius:8px;border:1px solid var(--line);}
+.ph-chk input{accent-color:var(--accent);}
+.ph-range{-webkit-appearance:none;appearance:none;height:4px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer;}
+.ph-range::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;}
+.ph-range::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:pointer;border:0;}
+.ph-val{font-size:11.5px;color:var(--dim);min-width:46px;text-align:right;font-family:Consolas,monospace;}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;background:var(--bg3);border:1px solid var(--line);border-radius:8px;color:var(--fg);font-size:12.5px;cursor:pointer;user-select:none;-webkit-user-select:none;transition:border-color .15s;margin-right:6px;margin-bottom:6px;}
+.chip:hover{border-color:#3a4553;}
+.chip.on{border-color:var(--accent);outline:1px solid rgba(76,141,255,.35);}
+.chip b{color:#9fc3ff;font-family:Consolas,monospace;}
+.chip button{background:transparent;border:0;color:var(--danger);cursor:pointer;font-size:14px;padding:0 2px;border-radius:5px;}
+.chip button:hover{background:rgba(255,123,123,.15);}
+.modal-mask{position:fixed;inset:0;background:rgba(5,8,12,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:18px;}
+.modal-mask.show{display:flex;}
+.modal-card{width:min(480px,100%);background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:18px;max-height:88vh;overflow-y:auto;}
+.modal-card .modal-title{font-size:16px;font-weight:650;margin-bottom:14px;}
+.mf{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;flex:1;min-width:70px;}
+.mf label{font-size:11.5px;color:var(--dim);}
+.mf-row{display:flex;gap:10px;flex-wrap:wrap;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;}
+.placeholder{max-width:560px;margin:64px auto;text-align:center;color:var(--dim);}
+.placeholder h2{color:var(--fg);margin:14px 0 6px;font-size:19px;}
+.ph-icon{font-size:42px;}
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-thumb{background:#26303d;border-radius:5px;border:2px solid var(--bg2);}
+::-webkit-scrollbar-thumb:hover{background:#33404f;}
+@media (max-width:980px){.plot,.solver,.mol,.phys{max-width:100%;}}
+@media (max-width:760px){.sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);}.sidebar.open{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.7);}body.sb-hide .sidebar{margin-left:0;transform:translateX(-100%);}.view{padding:12px;}.home-head h1{font-size:21px;}.home-grid{grid-template-columns:1fr;gap:12px;}.plot-cw canvas{height:240px;}.mol-stage{height:clamp(300px,56vh,480px);}.mol-info .name{font-size:15px;}.mol-custom{grid-template-columns:1fr;}.solver-tab{padding:8px 10px;font-size:12.5px;}}
+</style></head><body>
+<div id="app">
+<aside class="sidebar" id="sidebar">
+<div class="brand"><span class="logo">🧰</span><span>工具箱</span></div>
+<nav id="nav"></nav>
+</aside>
+<div class="content">
+<header class="topbar">
+<button class="top-btn" id="menuBtn" title="切换侧边栏">☰</button>
+<div class="topbar-spacer"></div>
+<button class="top-btn" id="fsBtn" title="全屏">⛶</button>
+</header>
+<main class="view" id="view"></main>
+</div>
+</div>
+<script>
+/* ===== 数学表达式引擎 ===== */
+const Engine=(function(){var ANG='deg',tc={};var CONST={pi:Math.PI,e:Math.E,tau:Math.PI*2,phi:(1+Math.sqrt(5))/2};var FUN={};
+function d1(n,f){FUN[n]={mn:1,mx:1,f:f};}function dn(n,a,b,f){FUN[n]={mn:a,mx:b,f:f};}
+function tor(x){return ANG==='deg'?x*Math.PI/180:x;}function frr(x){return ANG==='deg'?x*180/Math.PI:x;}
+function N(v){if(typeof v!=='number'||!isFinite(v))throw Error('数值无效');return v;}
+d1('sin',function(a){return Math.sin(tor(N(a)));});d1('cos',function(a){return Math.cos(tor(N(a)));});
+d1('tan',function(a){var r=tor(N(a)),c=Math.cos(r);if(Math.abs(c)<1e-14)throw Error('tan 无定义');return Math.sin(r)/c;});
+d1('asin',function(a){return frr(Math.asin(N(a)));});d1('acos',function(a){return frr(Math.acos(N(a)));});d1('atan',function(a){return frr(Math.atan(N(a)));});
+d1('sinh',function(a){return Math.sinh(N(a));});d1('cosh',function(a){return Math.cosh(N(a));});d1('tanh',function(a){return Math.tanh(N(a));});
+d1('abs',function(a){return Math.abs(N(a));});d1('sqrt',function(a){return Math.sqrt(N(a));});d1('cbrt',function(a){return Math.cbrt(N(a));});
+d1('exp',function(a){return Math.exp(N(a));});d1('ln',function(a){return Math.log(N(a));});d1('log',function(a){return Math.log10(N(a));});d1('log2',function(a){return Math.log2(N(a));});
+d1('floor',function(a){return Math.floor(N(a));});d1('ceil',function(a){return Math.ceil(N(a));});d1('round',function(a){return Math.round(N(a));});d1('trunc',function(a){return Math.trunc(N(a));});d1('sign',function(a){return Math.sign(N(a));});
+dn('pow',2,2,function(a,b){return Math.pow(N(a),N(b));});dn('mod',2,2,function(a,b){var x=N(a),y=N(b);return((x%y)+y)%y;});
+dn('max',1,9,function(){var a=[].slice.call(arguments).map(N);return Math.max.apply(null,a);});dn('min',1,9,function(){var a=[].slice.call(arguments).map(N);return Math.min.apply(null,a);});
+dn('root',2,2,function(x,n){x=N(x);n=N(n);if(x<0&&Number.isInteger(n)&&n%2)return -Math.pow(-x,1/n);return Math.pow(x,1/n);});
+d1('fact',function(a){a=N(a);if(!Number.isInteger(a)||a<0)throw Error('阶乘需非负整数');if(a>170)return Infinity;var r=1;for(var k=2;k<=a;k++)r*=k;return r;});
+function tk(s){if(tc[s])return tc[s];var o=[],i=0;
+while(i<s.length){var c=s[i];
+if(/\s/.test(c)){i++;continue;}
+if(c==='π'){o.push({t:'i',v:'pi'});i++;continue;}
+if(/[0-9]/.test(c)||(c==='.'&&/[0-9]/.test(s[i+1]||''))){var j=i,dot=0;while(j<s.length&&(/[0-9]/.test(s[j])||(s[j]==='.'&&!dot))){if(s[j]==='.')dot=1;j++;}
+if(/[eE]/.test(s[j]||'')){var k=j+1;if(s[k]==='+'||s[k]==='-')k++;if(/[0-9]/.test(s[k]||'')){while(k<s.length&&/[0-9]/.test(s[k]))k++;j=k;}}
+o.push({t:'n',v:parseFloat(s.slice(i,j))});i=j;continue;}
+if(/[a-zA-Z_]/.test(c)){var j2=i;while(j2<s.length&&/[a-zA-Z_0-9]/.test(s[j2]))j2++;o.push({t:'i',v:s.slice(i,j2)});i=j2;continue;}
+var al={'×':'*','÷':'/','∗':'*','−':'-','（':'(','）':')','，':',','、':','};var ch=al[c]||c;
+if('+-*/^%!(),[]'.indexOf(ch)>=0){o.push({t:'o',v:ch});i++;continue;}
+throw Error('无法识别“'+c+'”');}
+tc[s]=o;return o;}
+function parse(ts){var p=0;
+function pk(){return ts[p];}
+function iso(v){var t=ts[p];return t&&t.t==='o'&&t.v===v;}
+function pre(){var t=ts[p];return t&&(t.t==='n'||t.t==='i'||(t.t==='o'&&(t.v==='('||t.v==='[')));}
+function ex(){return ad();}
+function ad(){var l=mu();while(iso('+')||iso('-')){var o=ts[p++].v;var r=mu();l=o==='+'?l+r:l-r;}return l;}
+function mu(){var l=un();for(;;){if(iso('*')||iso('/')||iso('%')){var o=ts[p++].v;var r=un();l=o==='*'?l*r:o==='/'?l/r:(((l%r)+r)%r);}else if(pre()){l=l*un();}else break;}return l;}
+function un(){if(iso('-')){p++;return -un();}if(iso('+')){p++;return un();}return pw();}
+function pw(){var b=po();if(iso('^')){p++;return Math.pow(b,un());}return b;}
+function po(){var v=pr();while(iso('!')){p++;v=fa(v);}return v;}
+function fa(v){if(!Number.isInteger(v)||v<0)throw Error('阶乘需非负整数');if(v>170)return Infinity;var r=1;for(var k=2;k<=v;k++)r*=k;return r;}
+function pr(){var t=pk();if(!t)throw Error('表达式不完整');
+if(t.t==='n'){p++;return t.v;}
+if(t.t==='i'){p++;var nm=t.v.toLowerCase();
+if(iso('(')){p++;var a=[];if(!iso(')')){a.push(ex());while(iso(',')){p++;a.push(ex());}}if(!iso(')'))throw Error('缺少“)”');p++;return cf(nm,a);}
+if(CONST[nm]!==undefined)return CONST[nm];
+if(FUN[nm])return cf(nm,[pr()]);
+throw Error('未知“'+t.v+'”');}
+if(t.t==='o'&&t.v==='('){p++;var v=ex();if(!iso(')'))throw Error('缺少“)”');p++;return v;}
+throw Error('意外“'+(t.v||'')+'”');}
+function cf(n,a){var f=FUN[n];if(!f)throw Error('未知函数“'+n+'”');if(a.length<f.mn)throw Error(n+'() 需要 '+f.mn+' 个参数');if(a.length>f.mx)throw Error(n+'() 最多 '+f.mx+' 个参数');return f.f.apply(null,a);}
+var v=ex();if(p<ts.length)throw Error('表达式存在多余内容');return v;}
+return{setAngle:function(m){ANG=m==='rad'?'rad':'deg';},getAngle:function(){return ANG;},eval:function(s){var t=tk(s);if(!t.length)throw Error('请输入表达式');return parse(t);},
+fmt:function(v){if(typeof v!=='number')return String(v);if(Number.isNaN(v))return'NaN';if(!isFinite(v))return v>0?'∞':'-∞';if(v===0)return'0';var a=Math.abs(v);if(a>=1e12||a<1e-9)return v.toExponential(8).replace(/\.?0+e/,'e');return String(parseFloat(v.toPrecision(12)));}};})();
+
+/* ===== 应用框架 ===== */
+const App=(function(){
+var reg=[],idx=new Map();
+function closeSb(){var s=document.getElementById('sidebar');if(s)s.classList.remove('open');}
+function buildNav(){var nav=document.getElementById('nav');if(!nav)return;nav.innerHTML='';
+var h=document.createElement('a');h.className='nav-item nav-home';h.href='#/';h.dataset.key='__home';h.innerHTML='<span class="item-icon">⌂</span><span>主目录</span>';h.addEventListener('click',closeSb);nav.appendChild(h);
+var dv=document.createElement('div');dv.className='nav-divider';nav.appendChild(dv);
+reg.forEach(function(m){var a=document.createElement('a');a.className='nav-item';a.href='#/'+m.id;a.dataset.key=m.key;a.innerHTML='<span class="item-icon">'+m.icon+'</span><span>'+m.name+'</span>';a.addEventListener('click',closeSb);nav.appendChild(a);});}
+function register(d){if(!d||!d.id)throw Error('模块需指定 id');if(typeof d.factory!=='function')throw Error('模块 '+d.id+' 缺少 factory');
+var k=d.id;var o=idx.get(k);if(o){var i=reg.indexOf(o);if(i>=0)reg.splice(i,1);}
+var e={key:k,id:d.id,name:d.name,icon:d.icon||'•',desc:d.desc||'',factory:d.factory,inst:null};
+reg.push(e);idx.set(k,e);buildNav();return e;}
+function setActive(k){var l=document.querySelectorAll('#nav .nav-item');for(var i=0;i<l.length;i++)l[i].classList.toggle('active',l[i].dataset.key===k);}
+function showHome(){var view=document.getElementById('view');setActive('__home');view.innerHTML='';
+var wrap=document.createElement('div');wrap.className='home';
+var head=document.createElement('div');head.className='home-head';head.innerHTML='<h1>工具箱</h1>';wrap.appendChild(head);
+var grid=document.createElement('div');grid.className='home-grid';
+reg.forEach(function(m){var card=document.createElement('section');card.className='home-card';
+card.innerHTML='<div class="home-card-head"><span class="home-ico">'+m.icon+'</span><div><h2>'+m.name+'</h2><p class="desc">'+m.desc+'</p></div></div>';
+var a=document.createElement('a');a.className='open';a.href='#/'+m.id;a.textContent='打开 →';card.appendChild(a);
+grid.appendChild(card);});
+wrap.appendChild(grid);view.appendChild(wrap);view.scrollTop=0;document.title='工具箱';}
+function showMod(e){var view=document.getElementById('view');
+setActive(e.key);view.innerHTML='';var m;
+try{m=e.inst||(e.inst=e.factory());}catch(err){view.innerHTML='<div class="placeholder"><div class="ph-icon">⚠️</div><h2>模块加载失败</h2><p>'+(err.message||err)+'</p></div>';return;}
+if(!m||typeof m.render!=='function'){view.innerHTML='<div class="placeholder"><div class="ph-icon">⚠️</div><h2>模块结构不完整</h2></div>';return;}
+try{m.render(view);}catch(err){view.innerHTML='<div class="placeholder"><div class="ph-icon">⚠️</div><h2>渲染出错</h2><p>'+(err.message||err)+'</p></div>';}
+view.scrollTop=0;document.title=e.name+' · 工具箱';}
+function route(){var p=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);var e=p.length?idx.get(p[0]):null;if(e)showMod(e);else showHome();}
+function init(){buildNav();window.addEventListener('hashchange',route);
+var mb=document.getElementById('menuBtn');
+if(mb)mb.addEventListener('click',function(){
+if(window.innerWidth<=760){document.getElementById('sidebar').classList.toggle('open');}
+else{document.body.classList.toggle('sb-hide');this.classList.toggle('on',document.body.classList.contains('sb-hide'));}});
+var fb=document.getElementById('fsBtn');
+if(fb)fb.addEventListener('click',function(){
+var d=document;
+if(!d.fullscreenElement&&!d.webkitFullscreenElement){
+var el=d.documentElement;
+var rq=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+if(rq)try{rq.call(el);}catch(e){}
+}else{
+var ex=d.exitFullscreen||d.webkitExitFullscreen||d.msExitFullscreen;
+if(ex)try{ex.call(d);}catch(e){}
+}});
+document.addEventListener('fullscreenchange',function(){fb.classList.toggle('on',!!document.fullscreenElement);});
+route();}
+return{register:register,init:init};})();
+
+/* ===== 表达式编译器 ===== */
+var FAC=function(n){if(n>170)return Infinity;var r=1;for(var k=2;k<=n;k++)r*=k;return r;};
+function lexMV(s){var t=[],i=0;
+while(i<s.length){var c=s[i];
+if(/\s/.test(c)){i++;continue;}
+if(c==='π'){t.push({t:'i',v:'pi'});i++;continue;}
+if(/[0-9]/.test(c)||(c==='.'&&/[0-9]/.test(s[i+1]||''))){var j=i,dot=false;while(j<s.length&&(/[0-9]/.test(s[j])||(s[j]==='.'&&!dot))){if(s[j]==='.')dot=true;j++;}
+if(/[eE]/.test(s[j]||'')){var k=j+1;if(s[k]==='+'||s[k]==='-')k++;if(/[0-9]/.test(s[k]||'')){while(k<s.length&&/[0-9]/.test(s[k]))k++;j=k;}}
+t.push({t:'n',v:parseFloat(s.slice(i,j))});i=j;continue;}
+if(/[a-zA-Z_]/.test(c)){var j2=i;while(j2<s.length&&/[a-zA-Z_0-9]/.test(s[j2]))j2++;t.push({t:'i',v:s.slice(i,j2)});i=j2;continue;}
+var al={'×':'*','÷':'/','∗':'*','−':'-','（':'(','）':')','，':',','、':','};var ch=al[c]||c;
+if('+-*/^%!(),'.indexOf(ch)>=0){t.push({t:'o',v:ch});i++;continue;}
+i++;}
+return t;}
+var FMAP={sin:'Math.sin',cos:'Math.cos',tan:'Math.tan',asin:'Math.asin',acos:'Math.acos',atan:'Math.atan',atan2:'Math.atan2',sinh:'Math.sinh',cosh:'Math.cosh',tanh:'Math.tanh',abs:'Math.abs',sqrt:'Math.sqrt',cbrt:'Math.cbrt',exp:'Math.exp',ln:'Math.log',log:'Math.log10',log2:'Math.log2',log10:'Math.log10',floor:'Math.floor',ceil:'Math.ceil',round:'Math.round',trunc:'Math.trunc',sign:'Math.sign',min:'Math.min',max:'Math.max',pow:'Math.pow',hypot:'Math.hypot',fac:'FAC',fact:'FAC'};
+function compileMV(src){var toks=lexMV(src),p=0;
+function pk(){return toks[p];}
+function iso(v){var t=toks[p];return t&&t.t==='o'&&t.v===v;}
+function starts(){var t=toks[p];if(!t)return false;return t.t==='n'||t.t==='i'||(t.t==='o'&&t.v==='(');}
+function ex(){return ad();}
+function ad(){var l=mu();while(iso('+')||iso('-')){var o=toks[p++].v;var r=mu();l='('+l+o+r+')';}return l;}
+function mu(){var l=un();for(;;){if(iso('*')||iso('/')||iso('%')){var o=toks[p++].v;var r=un();
+if(o==='%')l='((('+l+'%'+r+')+'+r+')%'+r+')';else l='('+l+o+r+')';}
+else if(starts()){l='('+l+'*'+un()+')';}else break;}return l;}
+function un(){if(iso('-')){p++;return '(-'+un()+')';}if(iso('+')){p++;return un();}return pw();}
+function pw(){var b=po();if(iso('^')){p++;return '(Math.pow('+b+','+un()+'))';}return b;}
+function po(){var v=pr();while(iso('!')){p++;v='(FAC('+v+'))';}return v;}
+function pr(){var t=pk();if(!t)throw Error('表达式不完整');
+if(t.t==='n'){p++;return '('+t.v+')';}
+if(t.t==='i'){p++;var nm=t.v;
+if(iso('(')){p++;var a=[];if(!iso(')')){a.push(ex());while(iso(',')){p++;a.push(ex());}}if(!iso(')'))throw Error('缺少右括号');p++;
+var lw=nm.toLowerCase(),fn=FMAP[lw];if(fn)return fn+'('+a.join(',')+')';throw Error('未知函数 '+nm);}
+var l2=nm.toLowerCase();
+if(l2==='pi')return '(Math.PI)';if(nm==='e')return '(Math.E)';if(l2==='tau')return '(6.283185307179586)';if(l2==='phi')return '(1.618033988749895)';
+return 'V.'+nm;}
+if(iso('(')){p++;var e=ex();if(!iso(')'))throw Error('缺少右括号');p++;return '('+e+')';}
+throw Error('意外符号 '+(t.v||''));}
+var out=ex();if(p<toks.length)throw Error('表达式多余内容');return out;}
+function makeF(expr){var eq=expr.split('=');var js;
+if(eq.length===2){js='(('+compileMV(eq[0].trim())+')-('+compileMV(eq[1].trim())+'))';}
+else if(eq.length===1){js=compileMV(eq[0].trim());}
+else throw Error('表达式含多个等号');
+var fn;try{fn=new Function('V','FAC','return ('+js+');');}catch(e){throw Error('表达式无效');}
+var V={x:0,y:0};
+return function(x,y,P){
+V.x=x;V.y=y;
+for(var k in V){if(k!=='x'&&k!=='y')delete V[k];}
+for(var k2 in P)V[k2]=P[k2];
+var r=fn(V,FAC);
+return typeof r==='number'?r:NaN;};}
+
+/* ===== 函数图像 ===== */
+App.register({id:'plot',name:'函数图像',icon:'📈',desc:'显函数 / 隐函数 · 参数滑块按表达式自动生成',factory:function(){return{render:function(root){
+var st={mode:'implicit',fns:[{e:'x^2/a^2 - y^2/b^2 = 1',c:'#4c8dff',v:1}],P:{a:2,b:1},view:{x0:-8,x1:8,y0:-5,y1:5},drag:null,compiled:null};
+root.innerHTML='<div class="plot"><div class="card plot-main"><div class="plot-modes" id="pmodes"><button class="plot-mode active" data-m="implicit">隐函数 F(x,y)=0</button><button class="plot-mode" data-m="explicit">显函数 y=f(x)</button></div><div class="plot-cw"><canvas id="pc"></canvas></div><div class="plot-sliders" id="ps"></div><div class="plot-bar"><button class="btn btn-sm" id="pin">放大 +</button><button class="btn btn-sm" id="pout">缩小 −</button><button class="btn btn-sm" id="preset">重置视角</button><span style="color:var(--dim);font-size:12px;margin-left:4px">x</span><input type="number" class="input" id="px0" value="-8"><span style="color:var(--dim)">~</span><input type="number" class="input" id="px1" value="8"><span style="color:var(--dim);font-size:12px;margin-left:4px">y</span><input type="number" class="input" id="py0" value="-5"><span style="color:var(--dim)">~</span><input type="number" class="input" id="py1" value="5"><button class="btn btn-sm" id="papply">应用</button></div></div><div class="card" style="padding:14px"><div class="card-title" id="plisttitle">方程列表</div><div id="pf"></div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn btn-sm primary" id="padd">+ 添加曲线</button><span style="font-size:12px;color:var(--dim)">预设：</span><span class="plot-presets" id="ppre" style="display:inline-flex;margin:0"></span></div></div></div>';
+var cv=root.querySelector('#pc'),ctx=cv.getContext('2d'),W=300,H=300;
+var curParams=st.P;
+var FNNAMES={sin:1,cos:1,tan:1,asin:1,acos:1,atan:1,atan2:1,sinh:1,cosh:1,tanh:1,abs:1,sqrt:1,cbrt:1,exp:1,ln:1,log:1,log2:1,log10:1,floor:1,ceil:1,round:1,trunc:1,sign:1,min:1,max:1,pow:1,mod:1,gcd:1,root:1,fact:1,fac:1};
+var CONSTN={pi:1,e:1,tau:1,phi:1};
+function extractParams(){var found={};
+st.fns.forEach(function(f){if(!f.e)return;
+var ids=f.e.match(/[a-zA-Z_][a-zA-Z_0-9]*/g)||[];
+ids.forEach(function(id){var lo=id.toLowerCase();
+if(lo==='x'||lo==='y')return;
+if(CONSTN[lo])return;
+if(FNNAMES[lo])return;
+found[id]=1;});});
+var newP={};Object.keys(found).sort().forEach(function(k){newP[k]=st.P[k]!==undefined?st.P[k]:1;});
+st.P=newP;curParams=st.P;}
+function X(x){return (x-st.view.x0)/(st.view.x1-st.view.x0)*W;}
+function Y(y){return H-(y-st.view.y0)/(st.view.y1-st.view.y0)*H;}
+function iX(sx){return st.view.x0+sx/W*(st.view.x1-st.view.x0);}
+function nice(r){var m=Math.pow(10,Math.floor(Math.log10(r))),x=r/m;return x<=1.5?m:x<=3?2*m:x<=7?5*m:10*m;}
+function fmtN(n,s){if(Math.abs(n)>=1e4||(Math.abs(n)<0.01&&n!==0))return n.toExponential(1);var d=s<1?Math.ceil(-Math.log10(s)):0;return String(parseFloat(n.toFixed(d)));}
+function grid(){var v=st.view,xs=nice((v.x1-v.x0)/10),ys=nice((v.y1-v.y0)/10);
+ctx.fillStyle='#0d1117';ctx.fillRect(0,0,W,H);
+ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+for(var x=Math.ceil(v.x0/xs)*xs;x<=v.x1;x+=xs){var sxx=X(x);ctx.beginPath();ctx.moveTo(sxx,0);ctx.lineTo(sxx,H);ctx.stroke();}
+for(var y=Math.ceil(v.y0/ys)*ys;y<=v.y1;y+=ys){var syy=Y(y);ctx.beginPath();ctx.moveTo(0,syy);ctx.lineTo(W,syy);ctx.stroke();}
+ctx.strokeStyle='rgba(255,255,255,.28)';ctx.lineWidth=1.5;
+if(v.y0<=0&&v.y1>=0){var y0=Y(0);ctx.beginPath();ctx.moveTo(0,y0);ctx.lineTo(W,y0);ctx.stroke();}
+if(v.x0<=0&&v.x1>=0){var x0=X(0);ctx.beginPath();ctx.moveTo(x0,0);ctx.lineTo(x0,H);ctx.stroke();}
+ctx.fillStyle='rgba(255,255,255,.42)';ctx.font='11px Consolas,monospace';
+var ax=(v.y0<=0&&v.y1>=0)?Y(0):H-15;ctx.textAlign='center';ctx.textBaseline='top';
+for(var x2=Math.ceil(v.x0/xs)*xs;x2<=v.x1;x2+=xs){if(Math.abs(x2)<xs/100)continue;ctx.fillText(fmtN(x2,xs),X(x2),ax+4);}
+var ay=(v.x0<=0&&v.x1>=0)?X(0):28;ctx.textAlign='right';ctx.textBaseline='middle';
+for(var y2=Math.ceil(v.y0/ys)*ys;y2<=v.y1;y2+=ys){if(Math.abs(y2)<ys/100)continue;ctx.fillText(fmtN(y2,ys),ay-4,Y(y2));}}
+function normExpr(e){if(st.mode==='explicit'){e=e.trim();e=e.replace(/^y\s*=/,'').replace(/^f\s*\(\s*x\s*\)\s*=/,'').trim();}return e;}
+function compileAll(){st.compiled=st.fns.map(function(f){if(!f.v||!f.e)return null;try{var en=normExpr(f.e);if(!en)return null;return makeF(en);}catch(e){return null;}});}
+function drawExplicit(){st.fns.forEach(function(f,i){if(!f.v||!f.e)return;var F=st.compiled[i];if(!F)return;
+ctx.strokeStyle=f.c;ctx.lineWidth=2;ctx.beginPath();
+var started=false,py=null,n=Math.max(W*2,600);
+for(var j=0;j<=n;j++){var sxx=j/n*W,wx=iX(sxx);var y;
+try{y=F(wx,0,curParams);}catch(e){y=NaN;}
+if(!isFinite(y)){started=false;py=null;continue;}
+var syy=Y(y);if(py!==null&&Math.abs(syy-py)>H*0.9)started=false;
+if(!started){ctx.moveTo(sxx,syy);started=true;}else ctx.lineTo(sxx,syy);py=syy;}
+ctx.stroke();});}
+function drawImplicit(){var v=st.view;
+var step=Math.max(2,Math.round(W/420));
+var nx=Math.ceil(W/step)+1,ny=Math.ceil(H/step)+1;
+var g=new Float32Array(nx*ny);
+var dx=(v.x1-v.x0)/W,dy=(v.y1-v.y0)/H;
+for(var fi=0;fi<st.fns.length;fi++){if(!st.fns[fi].v||!st.fns[fi].e)continue;var F=st.compiled[fi];if(!F)continue;
+for(var j=0;j<ny;j++){var syy=j*step,wy=v.y0+(H-syy)*dy;
+for(var i=0;i<nx;i++){var sxx=i*step,wx=v.x0+sxx*dx;var val;
+try{val=F(wx,wy,curParams);}catch(e){val=NaN;}
+g[j*nx+i]=(typeof val==='number'&&isFinite(val))?val:NaN;}}
+ctx.strokeStyle=st.fns[fi].c;ctx.lineWidth=2;ctx.beginPath();
+for(var j2=0;j2<ny-1;j2++)for(var i2=0;i2<nx-1;i2++){
+var v00=g[j2*nx+i2],v10=g[j2*nx+i2+1],v01=g[(j2+1)*nx+i2],v11=g[(j2+1)*nx+i2+1];
+if(isNaN(v00)||isNaN(v10)||isNaN(v01)||isNaN(v11))continue;
+var b0=v00>0,b1=v10>0,b2=v11>0,b3=v01>0;
+var idx=(b0?1:0)|(b1?2:0)|(b2?4:0)|(b3?8:0);
+if(idx===0||idx===15)continue;
+var x0=i2*step,y0=j2*step,x1=x0+step,y1=y0+step;
+function eT(){var t=v00/(v00-v10);return[x0+t*(x1-x0),y0];}
+function eR(){var t=v10/(v10-v11);return[x1,y0+t*(y1-y0)];}
+function eB(){var t=v01/(v01-v11);return[x0+t*(x1-x0),y1];}
+function eL(){var t=v00/(v00-v01);return[x0,y0+t*(y1-y0)];}
+var segs;
+if(idx===1)segs=[[3,0]];else if(idx===2)segs=[[0,1]];else if(idx===3)segs=[[3,1]];
+else if(idx===4)segs=[[1,2]];else if(idx===5)segs=[[0,1],[2,3]];else if(idx===6)segs=[[0,2]];
+else if(idx===7)segs=[[3,2]];else if(idx===8)segs=[[2,3]];else if(idx===9)segs=[[0,2]];
+else if(idx===10)segs=[[0,3],[1,2]];else if(idx===11)segs=[[1,2]];else if(idx===12)segs=[[1,3]];
+else if(idx===13)segs=[[0,1]];else segs=[[0,3]];
+for(var s=0;s<segs.length;s++){var e0=segs[s][0],e1=segs[s][1];
+var A=e0===0?eT():e0===1?eR():e0===2?eB():eL();
+var B=e1===0?eT():e1===1?eR():e1===2?eB():eL();
+ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);}}
+ctx.stroke();}}
+function draw(){try{ctx.clearRect(0,0,W,H);grid();if(st.mode==='explicit')drawExplicit();else drawImplicit();}catch(e){}}
+function rs(){var r=cv.parentElement.getBoundingClientRect();var dpr=Math.min(window.devicePixelRatio||1,2);
+W=Math.max(1,Math.floor(r.width));H=parseInt(getComputedStyle(cv).height)||340;
+cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);draw();}
+function sync(){root.querySelector('#px0').value=st.view.x0.toFixed(2);root.querySelector('#px1').value=st.view.x1.toFixed(2);root.querySelector('#py0').value=st.view.y0.toFixed(2);root.querySelector('#py1').value=st.view.y1.toFixed(2);}
+function rParams(){var l=root.querySelector('#ps');l.innerHTML='';
+var keys=Object.keys(st.P);
+if(!keys.length){
+l.innerHTML='<div style="color:#5c6879;font-size:12px;padding:6px 2px">当前函数不含自定义参数。可任意使用字母（如 a、b、c、r、k、m 等）作为参数，滑块会自动生成。</div>';
+return;}
+keys.forEach(function(n){
+var d=document.createElement('div');d.className='plot-param-item';
+var nm=document.createElement('span');nm.className='plot-param-name';nm.textContent=n+' =';
+d.appendChild(nm);
+var inp=document.createElement('input');inp.type='range';inp.className='plot-param-slider';
+inp.min='-10';inp.max='10';inp.step='0.01';inp.value=st.P[n];
+d.appendChild(inp);
+var vs=document.createElement('span');vs.className='plot-param-value';vs.textContent=st.P[n].toFixed(2);
+d.appendChild(vs);
+inp.addEventListener('input',function(ev){
+st.P[n]=parseFloat(ev.target.value);
+curParams=st.P;
+vs.textContent=st.P[n].toFixed(2);
+draw();
+});
+l.appendChild(d);
+});}
+function rFns(){var l=root.querySelector('#pf');l.innerHTML='';st.fns.forEach(function(f,i){
+var d=document.createElement('div');d.className='plot-func-item';
+var prefix=st.mode==='explicit'?'y =':'F =';
+d.innerHTML='<div class="plot-func-color" style="background:'+f.c+';opacity:'+(f.v?1:.3)+'"></div><span style="color:var(--dim);font-family:Consolas,monospace;font-size:13px;white-space:nowrap">'+prefix+'</span><input type="text" class="plot-func-input" value="'+f.e.replace(/"/g,'&quot;')+'"><button class="plot-func-remove">×</button>';
+var ce=d.querySelector('.plot-func-color');ce.addEventListener('click',function(){f.v=!f.v;ce.style.opacity=f.v?1:.3;compileAll();draw();});
+d.querySelector('.plot-func-input').addEventListener('input',function(e){f.e=e.target.value;compileAll();extractParams();rParams();draw();});
+d.querySelector('.plot-func-remove').addEventListener('click',function(){st.fns.splice(i,1);compileAll();extractParams();rFns();draw();});
+l.appendChild(d);});
+root.querySelector('#plisttitle').textContent=st.mode==='explicit'?'函数列表 y = f(x)':'方程列表 F(x, y) = 0';
+extractParams();rParams();}
+var PRES={implicit:[['双曲线','x^2/a^2 - y^2/b^2 = 1','#4c8dff',{a:2,b:1}],['椭圆','x^2/a^2 + y^2/b^2 = 1','#3fd39b',{a:4,b:2}],['圆','x^2 + y^2 = r^2','#ffc46b',{r:3}],['抛物线','y^2 = 2*p*x','#ff7b7b',{p:2}],['心形线','(x^2 + y^2 - a^2)^3 - b*x^2*y^3 = 0','#c77dff',{a:1.2,b:8}],['双纽线','(x^2 + y^2)^2 - 2*a^2*(x^2 - y^2) = 0','#6ee7b7',{a:2}],['笛卡尔叶形线','x^3 + y^3 - 3*a*x*y = 0','#4c8dff',{a:2}],['正弦隐式','y - a*sin(b*x) = 0','#3fd39b',{a:2,b:1}]],explicit:[['一次','a*x + b','#4c8dff',{a:1,b:0}],['二次','a*x^2 + b*x + c','#3fd39b',{a:1,b:0,c:-2}],['三次','a*x^3 + b*x^2 + c*x + d','#ffc46b',{a:.4,b:0,c:-1,d:0}],['正弦','a*sin(b*x + c) + d','#4c8dff',{a:2,b:1,c:0,d:0}],['余弦','a*cos(b*x + c) + d','#3fd39b',{a:2,b:1,c:0,d:0}],['正切','a*tan(b*x)','#ff7b7b',{a:1,b:1}],['指数','a*exp(b*x) + c','#c77dff',{a:1,b:.5,c:0}],['对数','a*ln(b*x + c) + d','#6ee7b7',{a:1,b:1,c:1,d:0}],['绝对值','a*abs(x - b) + c','#ffc46b',{a:1,b:0,c:0}],['反比例','a/x + b','#4c8dff',{a:1,b:0}]]};
+function rPresets(){var pk=root.querySelector('#ppre');pk.innerHTML='';PRES[st.mode].forEach(function(p){
+var b=document.createElement('button');b.className='plot-preset';b.textContent=p[0];
+b.addEventListener('click',function(){st.fns=[{e:p[1],c:p[2],v:1}];st.P=Object.assign({},p[3]);curParams=st.P;compileAll();rFns();rPresets();draw();});
+pk.appendChild(b);});}
+function setMode(m){st.mode=m;var bs=root.querySelectorAll('.plot-mode');for(var i=0;i<bs.length;i++)bs[i].classList.toggle('active',bs[i].dataset.m===m);
+if(m==='implicit'){st.fns=[{e:'x^2/a^2 - y^2/b^2 = 1',c:'#4c8dff',v:1}];st.P={a:2,b:1};st.view={x0:-8,x1:8,y0:-5,y1:5};}
+else{st.fns=[{e:'a*sin(b*x + c) + d',c:'#4c8dff',v:1}];st.P={a:2,b:1,c:0,d:0};st.view={x0:-8,x1:8,y0:-5,y1:5};}
+curParams=st.P;compileAll();rFns();rPresets();sync();draw();}
+var bs=root.querySelectorAll('.plot-mode');for(var bi=0;bi<bs.length;bi++)bs[bi].addEventListener('click',function(){setMode(this.dataset.m);});
+cv.addEventListener('mousedown',function(e){st.drag={x:e.clientX,y:e.clientY,v:Object.assign({},st.view)};});
+window.addEventListener('mousemove',function(e){if(!st.drag)return;var dx=e.clientX-st.drag.x,dy=e.clientY-st.drag.y,v=st.view,vs=st.drag.v;
+var sxx=(vs.x1-vs.x0)/W,syy=(vs.y1-vs.y0)/H;
+v.x0=vs.x0-dx*sxx;v.x1=vs.x1-dx*sxx;v.y0=vs.y0+dy*syy;v.y1=vs.y1+dy*syy;sync();draw();});
+window.addEventListener('mouseup',function(){st.drag=null;});
+cv.addEventListener('wheel',function(e){e.preventDefault();var r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,v=st.view,f=e.deltaY>0?1.1:.9;
+var wx=v.x0+mx/W*(v.x1-v.x0),wy=v.y1-my/H*(v.y1-v.y0);
+v.x0=wx-(wx-v.x0)*f;v.x1=wx+(v.x1-wx)*f;v.y0=wy-(wy-v.y0)*f;v.y1=wy+(v.y1-wy)*f;sync();draw();},{passive:false});
+cv.addEventListener('touchstart',function(e){if(e.touches.length===1){st.drag={x:e.touches[0].clientX,y:e.touches[0].clientY,v:Object.assign({},st.view)};}else if(e.touches.length===2){st.drag=null;st.pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+cv.addEventListener('touchmove',function(e){
+if(e.touches.length===1&&st.drag){e.preventDefault();var dx=e.touches[0].clientX-st.drag.x,dy=e.touches[0].clientY-st.drag.y,v=st.view,vs=st.drag.v;
+var sxx=(vs.x1-vs.x0)/W,syy=(vs.y1-vs.y0)/H;
+v.x0=vs.x0-dx*sxx;v.x1=vs.x1-dx*sxx;v.y0=vs.y0+dy*syy;v.y1=vs.y1+dy*syy;sync();draw();}
+else if(e.touches.length===2&&st.pinch){e.preventDefault();var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+var f=st.pinch/d;st.pinch=d;var v2=st.view,cx=(v2.x0+v2.x1)/2,cy=(v2.y0+v2.y1)/2,w=(v2.x1-v2.x0)*f,h=(v2.y1-v2.y0)*f;
+v2.x0=cx-w/2;v2.x1=cx+w/2;v2.y0=cy-h/2;v2.y1=cy+h/2;sync();draw();}},{passive:false});
+cv.addEventListener('touchend',function(){st.drag=null;st.pinch=0;});
+function zoom(f){var v=st.view,cx=(v.x0+v.x1)/2,cy=(v.y0+v.y1)/2,w=(v.x1-v.x0)*f,h=(v.y1-v.y0)*f;
+v.x0=cx-w/2;v.x1=cx+w/2;v.y0=cy-h/2;v.y1=cy+h/2;sync();draw();}
+root.querySelector('#pin').addEventListener('click',function(){zoom(.8);});
+root.querySelector('#pout').addEventListener('click',function(){zoom(1.25);});
+root.querySelector('#preset').addEventListener('click',function(){st.view={x0:-8,x1:8,y0:-5,y1:5};sync();draw();});
+root.querySelector('#papply').addEventListener('click',function(){var a=parseFloat(root.querySelector('#px0').value),b=parseFloat(root.querySelector('#px1').value),c=parseFloat(root.querySelector('#py0').value),d=parseFloat(root.querySelector('#py1').value);
+if(isFinite(a))st.view.x0=a;if(isFinite(b))st.view.x1=b;if(isFinite(c))st.view.y0=c;if(isFinite(d))st.view.y1=d;draw();});
+root.querySelector('#padd').addEventListener('click',function(){var cols=['#4c8dff','#3fd39b','#ffc46b','#ff7b7b','#c77dff','#6ee7b7'];
+st.fns.push({e:st.mode==='explicit'?'x':'x^2 + y^2 - r^2',c:cols[st.fns.length%cols.length],v:1});compileAll();rFns();draw();});
+compileAll();rFns();rPresets();sync();requestAnimationFrame(rs);
+if(typeof ResizeObserver!=='undefined'){var ro=new ResizeObserver(function(){rs();});ro.observe(cv.parentElement);}else window.addEventListener('resize',rs);
+}};}});
+
+/* ===== 方程求解 ===== */
+App.register({id:'solver',name:'方程求解',icon:'📐',desc:'一元 / 二次 / 三次方程 · 线性方程组 · 不等式',factory:function(){return{render:function(root){
+root.innerHTML='<div class="solver"><div class="card" style="padding:18px"><div class="solver-tabs" id="stabs"><button class="solver-tab active" data-tab="eq">一元方程</button><button class="solver-tab" data-tab="quad">二次方程</button><button class="solver-tab" data-tab="cubic">三次方程</button><button class="solver-tab" data-tab="lin">线性方程组</button><button class="solver-tab" data-tab="ineq">一元不等式</button></div><div class="solver-pane active" data-pane="eq"><div class="form-row"><label class="label">方程 f(x) = 0</label><input type="text" class="input" id="seq" value="x^3 - 2*x^2 - 5*x + 6" placeholder="例如 x^3-2x^2-5x+6"></div><div class="form-row-inline"><div><label class="label">搜索范围</label><div style="display:flex;gap:6px;align-items:center"><input type="number" class="input" id="semin" value="-100"><span style="color:var(--dim)">~</span><input type="number" class="input" id="semax" value="100"></div></div><div style="flex:0"><button class="btn primary" id="seqb">求解</button></div></div></div><div class="solver-pane" data-pane="quad"><div class="form-row"><label class="label">ax² + bx + c = 0</label></div><div class="form-row-inline"><div><label class="label">a</label><input type="number" class="input" id="sqa" value="1"></div><div><label class="label">b</label><input type="number" class="input" id="sqb" value="0"></div><div><label class="label">c</label><input type="number" class="input" id="sqc" value="-4"></div><div style="flex:0"><button class="btn primary" id="sqab">求解</button></div></div></div><div class="solver-pane" data-pane="cubic"><div class="form-row"><label class="label">ax³ + bx² + cx + d = 0</label></div><div class="form-row-inline"><div><label class="label">a</label><input type="number" class="input" id="sca" value="1"></div><div><label class="label">b</label><input type="number" class="input" id="scb" value="-6"></div><div><label class="label">c</label><input type="number" class="input" id="scc" value="11"></div><div><label class="label">d</label><input type="number" class="input" id="scd" value="-6"></div><div style="flex:0"><button class="btn primary" id="scb2">求解</button></div></div></div><div class="solver-pane" data-pane="lin"><div class="form-row-inline"><div><label class="label">元数</label><select class="input" id="sln"><option value="2">2 元</option><option value="3">3 元</option></select></div><div style="flex:0"><button class="btn primary" id="slb">求解</button></div></div><div class="form-row" id="slinrows"></div></div><div class="solver-pane" data-pane="ineq"><div class="form-row"><label class="label">不等式 f(x) 与 0 比较</label><input type="text" class="input" id="sineq" value="x^2 - 4"></div><div class="form-row-inline"><div><label class="label">比较方式</label><select class="input" id="siop"><option value="gt">f(x) &gt; 0</option><option value="lt">f(x) &lt; 0</option><option value="ge">f(x) ≥ 0</option><option value="le">f(x) ≤ 0</option></select></div><div><label class="label">范围</label><div style="display:flex;gap:6px;align-items:center"><input type="number" class="input" id="simin" value="-100"><span style="color:var(--dim)">~</span><input type="number" class="input" id="simax" value="100"></div></div><div style="flex:0"><button class="btn primary" id="sib">求解</button></div></div></div><div class="solver-result" id="sres" style="display:none"><div class="solver-result-title">求解结果</div><div class="solver-result-content" id="sresc"></div></div></div></div>';
+var tabs=root.querySelectorAll('.solver-tab');for(var i=0;i<tabs.length;i++)tabs[i].addEventListener('click',function(){var ts=root.querySelectorAll('.solver-tab');for(var j=0;j<ts.length;j++)ts[j].classList.remove('active');var ps=root.querySelectorAll('.solver-pane');for(var k=0;k<ps.length;k++)ps[k].classList.remove('active');this.classList.add('active');root.querySelector('[data-pane="'+this.dataset.tab+'"]').classList.add('active');});
+function show(h){root.querySelector('#sres').style.display='block';root.querySelector('#sresc').innerHTML=h;}
+function atX(e,x){try{return Engine.eval(e.replace(/\bx\b/g,'('+x+')'));}catch(err){return NaN;}}
+function fmtN(n){if(!isFinite(n))return n===Infinity?'∞':'-∞';if(Math.abs(n)<1e-10)return'0';if(Math.abs(n)>=1e10||(Math.abs(n)<0.001&&n!==0))return n.toExponential(6);return String(parseFloat(n.toPrecision(10)));}
+function newton(e,x0){for(var i=0;i<80;i++){var f=atX(e,x0),fh=atX(e,x0+1e-6);if(!isFinite(f))break;var df=(fh-f)/1e-6;if(Math.abs(df)<1e-12)break;var x1=x0-f/df;if(!isFinite(x1))break;if(Math.abs(x1-x0)<1e-10)return x1;x0=x1;}return x0;}
+function rootsQ(a,b,c){if(Math.abs(a)<1e-14){if(Math.abs(b)<1e-14)return[];return[-c/b];}var d=b*b-4*a*c;if(d<0)return[];if(Math.abs(d)<1e-14)return[-b/(2*a)];return[(-b+Math.sqrt(d))/(2*a),(-b-Math.sqrt(d))/(2*a)];}
+function rootsC(a,b,c,d){if(Math.abs(a)<1e-14)return rootsQ(b,c,d);var p=(3*a*c-b*b)/(3*a*a),q=(2*b*b*b-9*a*b*c+27*a*a*d)/(27*a*a*a),off=b/(3*a);
+if(Math.abs(p)<1e-12)return[Math.cbrt(-q)-off];var D=q*q/4+p*p*p/27,out=[];
+if(D>1e-12){var u=Math.cbrt(-q/2+Math.sqrt(D)),v=Math.cbrt(-q/2-Math.sqrt(D));out.push(u+v-off);}
+else{var A=Math.acos(Math.max(-1,Math.min(1,(3*q/(2*p))*Math.sqrt(-3/p)))),r=2*Math.sqrt(-p/3);for(var k=0;k<3;k++)out.push(r*Math.cos(A/3-2*Math.PI*k/3)-off);}
+return out;}
+root.querySelector('#seqb').addEventListener('click',function(){var e=root.querySelector('#seq').value.trim();
+if(!e){show('<span style="color:var(--danger)">请输入方程</span>');return;}
+var a=parseFloat(root.querySelector('#semin').value)||-100,b=parseFloat(root.querySelector('#semax').value)||100;
+var roots=[],prev=atX(e,a),N=2000,dx=(b-a)/N;
+for(var i=1;i<=N;i++){var x=a+i*dx,cur=atX(e,x);
+if(isFinite(prev)&&isFinite(cur)&&prev*cur<=0){var r=newton(e,x);if(!roots.length||Math.abs(r-roots[roots.length-1])>1e-6)roots.push(r);}
+prev=cur;}
+var h='<div>f(x) = '+e.replace(/</g,'&lt;')+' = 0</div>';
+if(!roots.length)h+='<div style="margin-top:6px;color:var(--warn)">该范围内未找到实根</div>';
+else h+='<div style="margin-top:8px;color:var(--green)">根：</div><div style="font-size:17px">'+roots.map(function(r){return'<b>x = '+fmtN(r)+'</b>';}).join('　')+'</div>';
+show(h);});
+root.querySelector('#sqab').addEventListener('click',function(){var a=parseFloat(root.querySelector('#sqa').value),b=parseFloat(root.querySelector('#sqb').value),c=parseFloat(root.querySelector('#sqc').value);
+var d=b*b-4*a*c,h='<div>'+a+'x² + '+b+'x + '+c+' = 0</div><div style="margin-top:6px">判别式 Δ = '+fmtN(d)+'</div>';
+if(d>1e-12)h+='<div style="color:var(--green);margin-top:6px">两个实根：</div><div style="font-size:17px">x₁ = '+fmtN((-b+Math.sqrt(d))/(2*a))+'</div><div style="font-size:17px">x₂ = '+fmtN((-b-Math.sqrt(d))/(2*a))+'</div>';
+else if(Math.abs(d)<1e-12)h+='<div style="color:var(--warn);margin-top:6px">重根：x = '+fmtN(-b/(2*a))+'</div>';
+else{var rp=-b/(2*a),ip=Math.sqrt(-d)/(2*a);h+='<div style="color:var(--warn);margin-top:6px">无实根，共轭复根：</div><div style="font-size:16px">x = '+fmtN(rp)+' ± '+fmtN(ip)+'i</div>';}
+show(h);});
+root.querySelector('#scb2').addEventListener('click',function(){var a=parseFloat(root.querySelector('#sca').value),b=parseFloat(root.querySelector('#scb').value),c=parseFloat(root.querySelector('#scc').value),d=parseFloat(root.querySelector('#scd').value);
+var rs=rootsC(a,b,c,d),uq=[];rs.forEach(function(r){var ok=true;for(var i=0;i<uq.length;i++)if(Math.abs(r-uq[i])<1e-7)ok=false;if(ok)uq.push(r);});
+show('<div>'+a+'x³ + '+b+'x² + '+c+'x + '+d+' = 0</div><div style="margin-top:8px;color:var(--green)">实根：</div><div style="font-size:17px">'+uq.map(function(r){return'x = '+fmtN(r);}).join('　')+'</div>');});
+root.querySelector('#sln').addEventListener('change',buildLinRows);
+function buildLinRows(){var n=parseInt(root.querySelector('#sln').value,10),box=root.querySelector('#slinrows');box.innerHTML='';
+var vars=n===2?['x','y']:['x','y','z'];
+for(var r=0;r<n;r++){var row=document.createElement('div');row.className='solver-system-row';
+for(var c=0;c<n;c++){var inp=document.createElement('input');inp.type='number';inp.className='input solver-coeff';inp.id='sl_'+r+'_'+c;inp.value=(r===c)?'2':'1';
+var sp=document.createElement('span');sp.style.color='var(--dim)';sp.textContent=vars[c]+' '+(c<n-1?'+':'=');
+row.appendChild(inp);row.appendChild(sp);}
+var b=document.createElement('input');b.type='number';b.className='input solver-coeff';b.id='slr_'+r;b.value='5';
+row.appendChild(b);box.appendChild(row);}}
+root.querySelector('#slb').addEventListener('click',function(){var n=parseInt(root.querySelector('#sln').value,10),M=[];
+for(var r=0;r<n;r++){var row=[];for(var c=0;c<n;c++)row.push(parseFloat(root.querySelector('#sl_'+r+'_'+c).value)||0);row.push(parseFloat(root.querySelector('#slr_'+r).value)||0);M.push(row);}
+var vars=n===2?['x','y']:['x','y','z'];
+for(var i=0;i<n;i++){var mr=i;for(var k=i+1;k<n;k++)if(Math.abs(M[k][i])>Math.abs(M[mr][i]))mr=k;var t=M[i];M[i]=M[mr];M[mr]=t;
+if(Math.abs(M[i][i])<1e-12){show('<span style="color:var(--warn)">奇异矩阵，无解或无穷多解</span>');return;}
+for(var k2=i+1;k2<n;k2++){var f=M[k2][i]/M[i][i];for(var j=i;j<n+1;j++)M[k2][j]-=f*M[i][j];}}
+var x=new Array(n);for(var i2=n-1;i2>=0;i2--){var s=M[i2][n];for(var j2=i2+1;j2<n;j2++)s-=M[i2][j2]*x[j2];x[i2]=s/M[i2][i2];}
+show('<div style="color:var(--green)">唯一解：</div><div style="font-size:17px">'+vars.map(function(v,i){return v+' = '+fmtN(x[i]);}).join('　')+'</div>');});
+root.querySelector('#sib').addEventListener('click',function(){var e=root.querySelector('#sineq').value.trim(),op=root.querySelector('#siop').value,x0=parseFloat(root.querySelector('#simin').value),x1=parseFloat(root.querySelector('#simax').value);
+if(!e){show('<span style="color:var(--danger)">请输入表达式</span>');return;}
+function ck(v){if(op==='gt')return v>0;if(op==='lt')return v<0;if(op==='ge')return v>=0;return v<=0;}
+var sym={gt:'>',lt:'<',ge:'≥',le:'≤'}[op],N2=4000,dx=(x1-x0)/N2,iv=[],on=false,s=0;
+for(var i=0;i<=N2;i++){var x=x0+i*dx,f=atX(e,x);
+if(!isFinite(f)){if(on){iv.push([s,x-dx]);on=false;}continue;}
+if(ck(f)&&!on){s=x;on=true;}else if(!ck(f)&&on){iv.push([s,x]);on=false;}}
+if(on)iv.push([s,x1]);
+var h='<div>f(x) '+sym+' 0，f(x) = '+e.replace(/</g,'&lt;')+'</div>';
+if(!iv.length)h+='<div style="color:var(--warn);margin-top:6px">在范围内无解</div>';
+else h+='<div style="color:var(--green);margin-top:6px">解集：</div><div style="font-size:16px">'+iv.map(function(p){return'('+fmtN(p[0])+', '+fmtN(p[1])+')';}).join(' ∪ ')+'</div>';
+show(h);});
+buildLinRows();
+}};}});
+
+/* ===== 化学 · 三维分子 ===== */
+App.register({id:'mol',name:'三维分子',icon:'🔬',desc:'球棍模型 / 价层电子模型 · VSEPR 自动分析',factory:function(){return{render:function(root){
+var GEOM={2:{n:'直线形',d:[[1,0,0],[-1,0,0]],a:180},3:{n:'平面三角形',d:[[1,0,0],[-.5,.866,0],[-.5,-.866,0]],a:120},4:{n:'正四面体',d:[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],a:109.5},5:{n:'三角双锥',d:[[1,0,0],[-.5,.866,0],[-.5,-.866,0],[0,0,1],[0,0,-1]],a:90},6:{n:'正八面体',d:[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],a:90}};
+var EL={H:{c:'#eef2f7',r:.30},C:{c:'#8a919c',r:.44},N:{c:'#5b8cff',r:.42},O:{c:'#ff5252',r:.40},F:{c:'#6ee7b7',r:.36},B:{c:'#fb923c',r:.44},P:{c:'#ff9f43',r:.46},S:{c:'#ffd93d',r:.48},Cl:{c:'#4ade80',r:.46},Br:{c:'#e07a5f',r:.50},I:{c:'#c77dff',r:.54},Al:{c:'#c4b5fd',r:.50},Si:{c:'#f0abfc',r:.48},Na:{c:'#a78bfa',r:.55},Mg:{c:'#34d399',r:.52},K:{c:'#a78bfa',r:.58},Ca:{c:'#34d399',r:.55},Fe:{c:'#f97316',r:.52},Cu:{c:'#fbbf24',r:.50},Zn:{c:'#94a3b8',r:.50},OH:{c:'#ff6b6b',r:.46},CH3:{c:'#8a919c',r:.56},NH2:{c:'#5b8cff',r:.48},Li:{c:'#f87171',r:.52},Be:{c:'#fbbf24',r:.44}};
+var DE={c:'#b0b7c3',r:.44};
+function el(s){return EL[s]||DE;}
+function nv(v){var l=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/l,v[1]/l,v[2]/l];}
+function hx(c){c=c.charAt(0)==='#'?c.slice(1):c;return[parseInt(c.slice(0,2),16),parseInt(c.slice(2,4),16),parseInt(c.slice(4,6),16)];}
+function lt(c,a){var r=hx(c);return'rgb('+Math.round(r[0]+(255-r[0])*a)+','+Math.round(r[1]+(255-r[1])*a)+','+Math.round(r[2]+(255-r[2])*a)+')';}
+function dk(c,a){var r=hx(c);return'rgb('+Math.round(r[0]*(1-a))+','+Math.round(r[1]*(1-a))+','+Math.round(r[2]*(1-a))+')';}
+function lum(c){var r=hx(c);return(.299*r[0]+.587*r[1]+.114*r[2])/255;}
+function build(center,ligs,lone){var n=ligs.length+(lone||0),g=GEOM[n];if(!g)throw Error('暂不支持 '+n+' 对价层电子（支持 2~6 对）');
+var dirs=g.d.map(nv),ce=el(center),atoms=[{el:center,x:0,y:0,z:0}],bonds=[],lp=[];
+for(var i=0;i<ligs.length;i++){var L=ligs[i],sym=(typeof L==='string')?L:(L.el||'H'),ord=(typeof L==='string')?1:(L.o||1);
+var d=dirs[i],le=el(sym),bl=(ce.r+le.r)*1.6+.35;
+atoms.push({el:sym,x:d[0]*bl,y:d[1]*bl,z:d[2]*bl});bonds.push({a:0,b:i+1,o:ord});}
+for(var j=ligs.length;j<n;j++){var d2=dirs[j],l=ce.r*1.6+.55;lp.push({x:d2[0]*l,y:d2[1]*l,z:d2[2]*l,dir:d2});}
+return{atoms:atoms,bonds:bonds,lonePairs:lp,dirs:dirs,bondDirs:dirs.slice(0,ligs.length),loneDirs:dirs.slice(ligs.length),geo:g.n,ang:g.a,val:n};}
+var PRES=[{k:'water',n:'水',f:'H₂O',c:'O',l:['H','H'],lp:2,note:'V 形 · 2 对孤对'},{k:'methane',n:'甲烷',f:'CH₄',c:'C',l:['H','H','H','H'],lp:0,note:'正四面体 · 无孤对'},{k:'ammonia',n:'氨',f:'NH₃',c:'N',l:['H','H','H'],lp:1,note:'三角锥形 · 1 对孤对'},{k:'co2',n:'二氧化碳',f:'CO₂',c:'C',l:[{el:'O',o:2},{el:'O',o:2}],lp:0,note:'直线形 · 两个双键'},{k:'aloh4',n:'四羟基合铝离子',f:'[Al(OH)₄]⁻',c:'Al',l:['OH','OH','OH','OH'],lp:0,note:'配位离子 · 4 个 Al—O σ 键'},{k:'bf3',n:'三氟化硼',f:'BF₃',c:'B',l:['F','F','F'],lp:0,note:'平面三角形'},{k:'so2',n:'二氧化硫',f:'SO₂',c:'S',l:[{el:'O',o:2},{el:'O',o:2}],lp:1,note:'V 形 · 1 对孤对'},{k:'pcl5',n:'五氯化磷',f:'PCl₅',c:'P',l:['Cl','Cl','Cl','Cl','Cl'],lp:0,note:'三角双锥'},{k:'sf6',n:'六氟化硫',f:'SF₆',c:'S',l:['F','F','F','F','F','F'],lp:0,note:'正八面体'},{k:'h2s',n:'硫化氢',f:'H₂S',c:'S',l:['H','H'],lp:2,note:'V 形 · 2 对孤对'}];
+var MOLS={},curKey=PRES[0].k,cur=null,rotX=-.35,rotY=.6,zoom=1,auto=true,showLP=false,model='ball';
+PRES.forEach(function(p){try{var m=build(p.c,p.l,p.lp);m.name=p.n;m.formula=p.f;m.note=p.note;MOLS[p.k]=m;}catch(e){}});
+root.innerHTML='<div class="mol"><div class="mol-tabs" id="mtabs"></div><div class="mol-stage" id="mstage"><canvas id="mc"></canvas><div class="mol-info" id="minfo"></div><div class="mol-hint">拖动旋转 · 滚轮或双指缩放 · 双击重置</div><div class="mol-tools"><button id="mzi" title="放大">＋</button><button id="mzo" title="缩小">－</button><button id="mrs" title="重置视角">⟲</button><button id="mat" class="on" title="自动旋转">↻</button></div></div><div class="mol-controls"><span style="color:var(--dim);font-size:12px">模型：</span><button class="ctl on" id="mmodes">球棍模型</button><label><input type="checkbox" id="mlp"><span>显示孤对电子</span></label><span style="font-size:11.5px;color:#5c6879">斥力模型：孤对-孤对 = 孤对-成键 = 成键-成键</span><div class="spacer"></div><button class="ctl" id="mtg">＋ 自定义分子</button></div><div class="mol-custom" id="mcu"><div class="mc-field"><label>中心元素</label><input type="text" id="mcc" value="C" maxlength="3"></div><div class="mc-field"><label>孤对电子数</label><input type="number" id="mcl" value="0" min="0" max="4"></div><div class="mc-field full"><label>配体（空格分隔，如 H H O；可写 O=2 表示双键）</label><input type="text" id="mcg" value="H H H H"></div><div class="mc-actions"><button class="btn ghost" id="mcx">取消</button><button class="btn primary" id="mck">生成分子</button></div><div class="mc-msg" id="mcm"></div></div></div>';
+var tabsEl=root.querySelector('#mtabs'),stage=root.querySelector('#mstage'),cv=root.querySelector('#mc'),ctx=cv.getContext('2d'),info=root.querySelector('#minfo');
+var W=300,H=300,raf=null,dragging=false,ptrs=new Map(),pinch=0,cc=0;
+function rs(){var r=stage.getBoundingClientRect(),w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height)),dpr=Math.min(window.devicePixelRatio||1,2);
+W=w;H=h;if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}}
+function rotPt(x,y,z){var cb=Math.cos(rotY),sb=Math.sin(rotY),ca=Math.cos(rotX),sa=Math.sin(rotX);
+var x1=x*cb+z*sb,z1=-x*sb+z*cb,y2=y*ca-z1*sa,z2=y*sa+z1*ca;return[x1,y2,z2];}
+function molRadius(m){var R=.8;m.atoms.forEach(function(a){var d=Math.hypot(a.x,a.y,a.z)+el(a.el).r;if(d>R)R=d;});m.lonePairs.forEach(function(p){var d=Math.hypot(p.x,p.y,p.z)+.5;if(d>R)R=d;});return R;}
+function drawAtom(p){if(p.r<.4)return;
+var g=ctx.createRadialGradient(p.x-p.r*.28,p.y-p.r*.32,p.r*.08,p.x,p.y,p.r*1.05);
+g.addColorStop(0,lt(p.c,.5));g.addColorStop(.45,p.c);g.addColorStop(1,dk(p.c,.55));
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.2832);ctx.fillStyle=g;ctx.fill();
+ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=Math.max(.6,p.r*.04);ctx.stroke();
+if(p.r>=13&&p.lb){var fs=Math.min(p.r*.78,16);if(p.lb.length>2)fs=Math.min(p.r*.5,11);
+ctx.font='600 '+fs.toFixed(1)+'px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillStyle=lum(p.c)>.58?'rgba(0,0,0,.72)':'rgba(255,255,255,.92)';ctx.fillText(p.lb,p.x,p.y+fs*.04);}}
+function drawBond(a,b,o){var dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy);if(L<1)return;
+var ux=dx/L,uy=dy/L,x1=a.x+ux*a.r,y1=a.y+uy*a.r,x2=b.x-ux*b.r,y2=b.y-uy*b.r;
+if(Math.hypot(x2-x1,y2-y1)<1)return;
+var px=-uy,py=ux,w=Math.max(1.2,(a.r+b.r)*.14),offs,ww;
+if(o>=3){offs=[-w*1.7,0,w*1.7];ww=w*.7;}else if(o===2){offs=[-w*.85,w*.85];ww=w*.85;}else{offs=[0];ww=w;}
+ctx.lineCap='round';ctx.strokeStyle='rgba(160,170,185,.95)';ctx.lineWidth=ww;
+for(var i=0;i<offs.length;i++){var of=offs[i];ctx.beginPath();ctx.moveTo(x1+px*of,y1+py*of);ctx.lineTo(x2+px*of,y2+py*of);ctx.stroke();}}
+function drawLP(p){var g=ctx.createRadialGradient(p.x-p.r*.15,p.y-p.r*.15,p.r*.06,p.x,p.y,p.r);
+g.addColorStop(0,'rgba(170,205,255,.55)');g.addColorStop(.5,'rgba(110,150,240,.28)');g.addColorStop(1,'rgba(70,110,200,0)');
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.2832);ctx.fillStyle=g;ctx.fill();
+var dr=Math.max(1.2,p.r*.16);ctx.beginPath();ctx.arc(p.x-p.r*.2,p.y,dr,0,6.2832);ctx.arc(p.x+p.r*.2,p.y,dr,0,6.2832);
+ctx.fillStyle='rgba(255,255,255,.75)';ctx.fill();}
+function drawBallStick(){var A=cur.atoms.map(function(a){return rotPt(a.x,a.y,a.z);});
+var L=cur.lonePairs.map(function(p){return rotPt(p.x,p.y,p.z);});
+var R=molRadius(cur),CAM=R*4+6,SC=Math.min(W,H)/(R*3.0)*zoom,cx=W/2,cy=H/2;
+function pj(p){var k=CAM/(CAM-p[2]);return{x:cx+p[0]*SC*k,y:cy-p[1]*SC*k,z:p[2],k:k};}
+var PA=A.map(function(p,i){var q=pj(p),e=el(cur.atoms[i].el);q.r=e.r*SC*q.k;q.c=e.c;q.lb=cur.atoms[i].el;return q;});
+var PL=L.map(function(p){var q=pj(p);q.r=.5*SC*q.k;return q;});
+var prims=[];
+PA.forEach(function(p){prims.push({z:p.z,t:0,p:p});});
+cur.bonds.forEach(function(b){prims.push({z:(A[b.a][2]+A[b.b][2])/2,t:1,a:PA[b.a],b:PA[b.b],o:b.o||1});});
+if(showLP)PL.forEach(function(p){prims.push({z:p.z,t:2,p:p});});
+prims.sort(function(x,y){return x.z-y.z;});
+prims.forEach(function(pr){if(pr.t===0)drawAtom(pr.p);else if(pr.t===1)drawBond(pr.a,pr.b,pr.o);else drawLP(pr.p);});}
+function drawElectronModel(){var R=molRadius(cur),CAM=R*4+6,SC=Math.min(W,H)/(R*3.0)*zoom,cx=W/2,cy=H/2;
+var orbR=1.45,rPix=orbR*SC;
+ctx.beginPath();ctx.arc(cx,cy,rPix,0,6.2832);
+ctx.strokeStyle='rgba(120,160,255,.18)';ctx.lineWidth=1.3;ctx.setLineDash([5,6]);ctx.stroke();ctx.setLineDash([]);
+function drawDot(x,y,c){var r=Math.max(3.2,4.6*zoom);
+var g=ctx.createRadialGradient(x-r*.3,y-r*.3,r*.1,x,y,r);
+g.addColorStop(0,'#fff');g.addColorStop(.42,c);g.addColorStop(1,'rgba(0,0,0,0)');
+ctx.beginPath();ctx.arc(x,y,r,0,6.2832);ctx.fillStyle=g;ctx.fill();
+ctx.beginPath();ctx.arc(x,y,r*.34,0,6.2832);ctx.fillStyle=c;ctx.fill();}
+function drawPair(dir,color){var p=rotPt(dir[0]*orbR,dir[1]*orbR,dir[2]*orbR);
+var k=CAM/(CAM-p[2]);var sx=cx+p[0]*SC*k,sy=cy-p[1]*SC*k;
+var dx=sx-cx,dy=sy-cy,L=Math.hypot(dx,dy),ux,uy;
+if(L<1e-3){ux=1;uy=0;}else{ux=dx/L;uy=dy/L;}
+var px=-uy,py=ux,off=Math.max(3.4,rPix*.13);
+drawDot(sx+px*off,sy+py*off,color);drawDot(sx-px*off,sy-py*off,color);}
+cur.bondDirs.forEach(function(d){drawPair(d,'#5eead4');});
+if(showLP)cur.loneDirs.forEach(function(d){drawPair(d,'#c084fc');});
+var c3=rotPt(0,0,0),ck=CAM/(CAM-c3[2]),cxp=cx+c3[0]*SC*ck,cyp=cy-c3[1]*SC*ck;
+var cr=Math.max(8,el(cur.atoms[0].el).r*SC*ck*.72);
+var g2=ctx.createRadialGradient(cxp-cr*.3,cyp-cr*.35,cr*.1,cxp,cyp,cr);
+g2.addColorStop(0,lt(el(cur.atoms[0].el).c,.5));g2.addColorStop(1,el(cur.atoms[0].el).c);
+ctx.beginPath();ctx.arc(cxp,cyp,cr,0,6.2832);ctx.fillStyle=g2;ctx.fill();
+ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=1.2;ctx.stroke();
+ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='700 '+(cr*.9).toFixed(1)+'px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ctx.fillText(cur.atoms[0].el,cxp,cyp+cr*.04);}
+function draw(){if(!cur||W<2||H<2)return;ctx.clearRect(0,0,W,H);
+if(model==='ball')drawBallStick();else drawElectronModel();}
+function tick(){raf=null;if(!cv.isConnected)return;if(auto&&!dragging)rotY+=.0075;draw();if(auto&&!dragging)req();}
+function req(){if(raf!==null)return;raf=requestAnimationFrame(tick);}
+cv.addEventListener('pointerdown',function(e){if(e.cancelable)e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(x){}
+ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});dragging=true;cv.classList.add('dragging');
+if(ptrs.size===2){var p=Array.from(ptrs.values());pinch=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}});
+cv.addEventListener('pointermove',function(e){if(!ptrs.has(e.pointerId))return;if(e.cancelable)e.preventDefault();
+var pr=ptrs.get(e.pointerId),cu={x:e.clientX,y:e.clientY};ptrs.set(e.pointerId,cu);
+if(ptrs.size===1){rotY+=(cu.x-pr.x)*.0105;rotX+=(cu.y-pr.y)*.0105;rotX=Math.max(-Math.PI/2,Math.min(Math.PI/2,rotX));req();}
+else if(ptrs.size===2){var p=Array.from(ptrs.values()),d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);
+if(pinch>0&&d>0)zoom=Math.max(.35,Math.min(4,zoom*(d/pinch)));pinch=d;req();}});
+function endP(e){if(!ptrs.has(e.pointerId))return;ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=0;
+if(ptrs.size===0){dragging=false;cv.classList.remove('dragging');req();}}
+cv.addEventListener('pointerup',endP);cv.addEventListener('pointercancel',endP);cv.addEventListener('lostpointercapture',endP);
+cv.addEventListener('wheel',function(e){e.preventDefault();var d=e.deltaY;if(e.deltaMode===1)d*=20;else if(e.deltaMode===2)d*=400;
+zoom=Math.max(.35,Math.min(4,zoom*Math.exp(-d*.0012)));req();},{passive:false});
+cv.addEventListener('dblclick',function(e){e.preventDefault();resetV();});
+function resetV(){rotX=-.35;rotY=.6;zoom=1;req();}
+function hold(btn,fn){var t=null,i=null;function s(){fn();t=setTimeout(function(){i=setInterval(fn,60);},260);}function st(){if(t){clearTimeout(t);t=null;}if(i){clearInterval(i);i=null;}}
+btn.addEventListener('pointerdown',function(e){e.preventDefault();s();});btn.addEventListener('pointerup',st);btn.addEventListener('pointercancel',st);btn.addEventListener('pointerleave',st);}
+hold(root.querySelector('#mzi'),function(){zoom=Math.max(.35,Math.min(4,zoom*1.12));req();});
+hold(root.querySelector('#mzo'),function(){zoom=Math.max(.35,Math.min(4,zoom/1.12));req();});
+root.querySelector('#mrs').addEventListener('click',resetV);
+root.querySelector('#mat').addEventListener('click',function(){auto=!auto;this.classList.toggle('on',auto);if(auto)req();});
+root.querySelector('#mlp').addEventListener('change',function(){showLP=this.checked;req();});
+root.querySelector('#mmodes').addEventListener('click',function(){model=model==='ball'?'electron':'ball';this.textContent=model==='ball'?'球棍模型':'价层电子模型';this.classList.toggle('on',model==='ball');req();});
+function rTabs(){tabsEl.innerHTML='';Object.keys(MOLS).forEach(function(k){var m=MOLS[k];var b=document.createElement('button');
+b.className='mol-tab'+(k===curKey?' active':'');b.textContent=m.name;b.dataset.k=k;
+b.addEventListener('click',function(){if(k===curKey)return;curKey=k;cur=MOLS[k];resetV();rInfo();var all=tabsEl.querySelectorAll('.mol-tab');for(var i=0;i<all.length;i++)all[i].classList.toggle('active',all[i].dataset.k===k);});
+tabsEl.appendChild(b);});}
+function rInfo(){if(!cur){info.innerHTML='';return;}
+info.innerHTML='<div class="name">'+cur.name+'</div><div class="formula">'+cur.formula+'</div><div class="detail">'+cur.geo+' · 键角≈'+cur.ang+'° · 价层电子对 '+cur.val+(cur.note?'<br>'+cur.note:'')+'</div>';}
+var tg=root.querySelector('#mtg'),cu=root.querySelector('#mcu'),mcm=root.querySelector('#mcm');
+tg.addEventListener('click',function(){cu.classList.toggle('open');tg.classList.toggle('on',cu.classList.contains('open'));mcm.textContent='';mcm.className='mc-msg';});
+root.querySelector('#mcx').addEventListener('click',function(){cu.classList.remove('open');tg.classList.remove('on');});
+root.querySelector('#mck').addEventListener('click',function(){var cs=(root.querySelector('#mcc').value||'').trim(),lo=parseInt(root.querySelector('#mcl').value,10)||0,ls=(root.querySelector('#mcg').value||'').trim();
+mcm.textContent='';mcm.className='mc-msg';
+if(!cs){mcm.textContent='请输入中心元素';mcm.className='mc-msg error';return;}
+var parts=ls?ls.split(/[\s,，、]+/).filter(Boolean):[],ligs=[];
+for(var i=0;i<parts.length;i++){var t=parts[i],m=t.match(/^(.+?)=(\d)$/);if(m)ligs.push({el:m[1],o:parseInt(m[2],10)});else ligs.push(t);}
+if(ligs.length+lo<2){mcm.textContent='价层电子对总数至少为 2';mcm.className='mc-msg error';return;}
+if(ligs.length+lo>6){mcm.textContent='价层电子对总数最多为 6';mcm.className='mc-msg error';return;}
+try{var mol=build(cs,ligs,lo);cc++;mol.name='自定义 '+cc;mol.formula=cs+'('+ligs.map(function(x){return typeof x==='string'?x:x.el;}).join('')+')'+(lo?'·'+lo+'孤对':'');
+mol.note='由 VSEPR 自动分析：'+mol.geo;
+var k='cu_'+cc;MOLS[k]=mol;curKey=k;cur=mol;rTabs();rInfo();resetV();
+mcm.textContent='已生成：'+mol.geo+'，键角 ≈ '+mol.ang+'°';mcm.className='mc-msg ok';
+setTimeout(function(){cu.classList.remove('open');tg.classList.remove('on');},900);
+}catch(err){mcm.textContent=err.message;mcm.className='mc-msg error';}});
+rTabs();cur=MOLS[curKey];rInfo();rs();req();
+if(typeof ResizeObserver!=='undefined'){var ro=new ResizeObserver(function(){rs();req();});ro.observe(stage);}else window.addEventListener('resize',function(){rs();req();});
+}};}});
+
+/* ===== 物理 · 力学沙盒 ===== */
+App.register({id:'phys',name:'力学沙盒',icon:'🧲',desc:'物块重力 · 碰撞 · 动量 · 墙体 · WASD视角',factory:function(){return{render:function(root){
+var st={bodies:[],run:true,follow:true,cx:0,cy:0,scale:50,sel:null,dragBody:null,id:0,g:-9.8,wasdSens:500};
+var keys={};
+root.innerHTML=[
+'<div class="phys">',
+'<div class="card phys-card"><canvas id="pcv"></canvas></div>',
+'<div class="card phys-bar">',
+'<div class="ph-btns">',
+'<button class="btn primary" id="padd">＋ 添加物体</button>',
+'<button class="btn" id="pground">地面预设</button>',
+'<button class="btn ghost" id="prun">⏸ 暂停</button>',
+'<button class="btn ghost" id="pclr">清空</button>',
+'<button class="btn ghost" id="porg">回原点</button>',
+'</div>',
+'<div class="ph-row">',
+'<label class="ph-chk"><input type="checkbox" id="pfol" checked><span>自动跟踪</span></label>',
+'<span style="font-size:11.5px">重力 g</span>',
+'<input type="range" id="pgrav" min="-30" max="30" value="-9.8" step="0.1" class="ph-range" style="width:120px">',
+'<span id="pgravv" class="ph-val">-9.8</span>',
+'</div>',
+'<div class="ph-row">',
+'<span style="font-size:11.5px">WASD 灵敏度</span>',
+'<input type="range" id="pwasd" min="50" max="2000" value="500" step="10" class="ph-range" style="width:160px">',
+'<span id="pwasdv" class="ph-val">500</span>',
+'</div>',
+'<div class="ph-row" id="pinfo" style="font-size:12px;color:var(--dim)">场景：0 个物体</div>',
+'<div class="ph-row" id="plist"></div>',
+'<div class="ph-row" style="font-size:11.5px;color:#4d5765">WASD 移动视角 · 滚轮缩放(以屏幕中心) · 拖拽物块搬运 · 拖空白平移 · 双击选中</div>',
+'</div>',
+'<div class="modal-mask" id="pmask"><div class="modal-card">',
+'<div class="modal-title">添加物体</div>',
+'<div class="mf"><label>形状</label><select class="input" id="fsh">',
+'<option value="circle">圆形</option>',
+'<option value="rect" selected>矩形</option>',
+'<option value="wall">墙体（静止）</option>',
+'</select></div>',
+'<div id="fsec_circle" style="display:none">',
+'<div class="mf"><label>半径</label><input type="number" class="input" id="fpr" value="0.5" step="0.05" min="0.05"></div>',
+'</div>',
+'<div id="fsec_rect">',
+'<div class="mf-row">',
+'<div class="mf"><label>宽度</label><input type="number" class="input" id="fpw" value="1" step="0.1" min="0.1"></div>',
+'<div class="mf"><label>高度</label><input type="number" class="input" id="fph" value="1" step="0.1" min="0.1"></div>',
+'</div>',
+'<div class="mf"><label>预设</label><select class="input" id="fpre">',
+'<option value="">自定义</option>',
+'<option value="1,1">正方形 1×1</option>',
+'<option value="2,1">长条 2×1</option>',
+'<option value="1,2">竖条 1×2</option>',
+'<option value="3,0.5">薄板 3×0.5</option>',
+'<option value="0.5,3">细柱 0.5×3</option>',
+'<option value="4,0.8">长板 4×0.8</option>',
+'</select></div>',
+'<label class="ph-chk" style="margin-bottom:10px"><input type="checkbox" id="frot" checked><span>允许旋转</span></label>',
+'</div>',
+'<div id="fsec_wall" style="display:none">',
+'<div class="mf-row">',
+'<div class="mf"><label>长度</label><input type="number" class="input" id="fwl" value="6" step="0.5" min="0.5"></div>',
+'<div class="mf"><label>厚度</label><input type="number" class="input" id="fwt" value="0.4" step="0.05" min="0.05"></div>',
+'</div>',
+'</div>',
+'<div class="mf-row">',
+'<div class="mf"><label>象限角（0-180°）</label><input type="number" class="input" id="fang" value="0" step="1" min="0" max="180"></div>',
+'<div class="mf"><label>摩擦系数 μ</label><input type="number" class="input" id="ffric" value="0.3" step="0.05" min="0" max="1"></div>',
+'</div>',
+'<div id="fsec_dyn">',
+'<div class="mf-row">',
+'<div class="mf"><label>质量</label><input type="number" class="input" id="fmass" value="1" step="0.1" min="0.1"></div>',
+'<div class="mf"><label>碰撞系数 e</label><input type="number" class="input" id="fres" value="0.5" step="0.05" min="0" max="1"></div>',
+'<div class="mf"><label>电荷 q</label><input type="number" class="input" id="fchg" value="0" step="1"></div>',
+'</div>',
+'<div class="mf-row">',
+'<div class="mf"><label>初速度 vx</label><input type="number" class="input" id="fvx" value="0" step="1"></div>',
+'<div class="mf"><label>初速度 vy</label><input type="number" class="input" id="fvy" value="0" step="1"></div>',
+'</div>',
+'</div>',
+'<div class="modal-actions"><button class="btn ghost" id="fcx">取消</button><button class="btn primary" id="fok">添加</button></div>',
+'</div></div>',
+'</div>'
+].join('');
+var cv=root.querySelector('#pcv'),ctx=cv.getContext('2d');
+var W=300,H=300,raf=null;
+function rs(){var r=cv.parentElement.getBoundingClientRect();var w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));var dpr=Math.min(window.devicePixelRatio||1,2);W=w;H=h;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+function sx(x){return (x-st.cx)*st.scale+W/2;}
+function sy(y){return H/2-(y-st.cy)*st.scale;}
+function wxScreen(s){return st.cx+(s-W/2)/st.scale;}
+function wyScreen(s){return st.cy-(s-H/2)/st.scale;}
+function hue(i){return (i*67)%360;}
+
+function mkBody(o){
+  var b={shape:o.shape,x:o.x,y:o.y,vx:o.vx||0,vy:o.vy||0,angle:o.angle||0,av:0,mass:o.mass||1,fric:o.fric!==undefined?o.fric:0.3,res:o.res!==undefined?o.res:0.5,chg:o.chg||0,static:!!o.static,canRotate:o.canRotate!==undefined?o.canRotate:true,id:++st.id};
+  if(o.shape==='circle'){b.r=o.r;b.w=b.r*2;b.h=b.r*2;}
+  else{b.w=o.w;b.h=o.h;b.r=Math.hypot(b.w,b.h)/2;}
+  return b;
+}
+
+function bodyCorners(b){
+  if(b.shape==='circle')return null;
+  var hw=b.w/2,hh=b.h/2,c=Math.cos(b.angle),s=Math.sin(b.angle);
+  return[{x:b.x+c*(-hw)-s*(-hh),y:b.y+s*(-hw)+c*(-hh)},{x:b.x+c*hw-s*(-hh),y:b.y+s*hw+c*(-hh)},{x:b.x+c*hw-s*hh,y:b.y+s*hw+c*hh},{x:b.x+c*(-hw)-s*hh,y:b.y+s*(-hw)+c*hh}];
+}
+
+function polyPolyMTV(A,B){
+  var best=null;
+  function testAxes(p1,p2){
+    for(var i=0;i<p1.length;i++){
+      var j=(i+1)%p1.length;
+      var ex=p1[j].x-p1[i].x,ey=p1[j].y-p1[i].y;
+      var len=Math.hypot(ex,ey);
+      if(len<1e-10)continue;
+      var ax=-ey/len,ay=ex/len;
+      var min1=Infinity,max1=-Infinity,min2=Infinity,max2=-Infinity;
+      for(var k=0;k<p1.length;k++){var pr=p1[k].x*ax+p1[k].y*ay;if(pr<min1)min1=pr;if(pr>max1)max1=pr;}
+      for(var k2=0;k2<p2.length;k2++){var pr2=p2[k2].x*ax+p2[k2].y*ay;if(pr2<min2)min2=pr2;if(pr2>max2)max2=pr2;}
+      var ov=Math.min(max1,max2)-Math.max(min1,min2);
+      if(ov<=0)return false;
+      if(!best||ov<best.depth){
+        var dir=(min2+max2)/2-(min1+max1)/2;
+        var nx=ax,ny=ay;
+        if(dir<0){nx=-nx;ny=-ny;}
+        best={nx:nx,ny:ny,depth:ov};
+      }
+    }
+    return true;
+  }
+  if(!testAxes(A,B))return null;
+  if(!testAxes(B,A))return null;
+  return best;
+}
+
+function circlePolyMTV(cx,cy,cr,poly){
+  var axes=[];
+  for(var i=0;i<poly.length;i++){
+    var j=(i+1)%poly.length;
+    var ex=poly[j].x-poly[i].x,ey=poly[j].y-poly[i].y;
+    var len=Math.hypot(ex,ey);
+    if(len>1e-10)axes.push({x:-ey/len,y:ex/len});
+  }
+  var minD=Infinity,mvx=0,mvy=0;
+  for(var k=0;k<poly.length;k++){
+    var dx=poly[k].x-cx,dy=poly[k].y-cy;
+    var d=Math.hypot(dx,dy);
+    if(d<minD){minD=d;mvx=dx;mvy=dy;}
+  }
+  if(minD>1e-10)axes.push({x:mvx/minD,y:mvy/minD});
+  var best=null;
+  for(var a=0;a<axes.length;a++){
+    var ax=axes[a].x,ay=axes[a].y;
+    var cp=cx*ax+cy*ay;
+    var cmin=cp-cr,cmax=cp+cr;
+    var minP=Infinity,maxP=-Infinity;
+    for(var p=0;p<poly.length;p++){var proj=poly[p].x*ax+poly[p].y*ay;if(proj<minP)minP=proj;if(proj>maxP)maxP=proj;}
+    var ov=Math.min(cmax,maxP)-Math.max(cmin,minP);
+    if(ov<=0)return null;
+    if(!best||ov<best.depth){
+      var dir=(minP+maxP)/2-cp;
+      var nx=ax,ny=ay;
+      if(dir<0){nx=-nx;ny=-ny;}
+      best={nx:nx,ny:ny,depth:ov};
+    }
+  }
+  return best;
+}
+
+function collideBodies(A,B){
+  if(A.shape==='circle'&&B.shape==='circle'){
+    var dx=B.x-A.x,dy=B.y-A.y;
+    var d=Math.hypot(dx,dy);
+    var rsum=A.r+B.r;
+    if(d>=rsum)return null;
+    if(d<1e-10)return{nx:0,ny:-1,depth:rsum};
+    return{nx:dx/d,ny:dy/d,depth:rsum-d};
+  }
+  if(A.shape==='circle')return circlePolyMTV(A.x,A.y,A.r,bodyCorners(B));
+  if(B.shape==='circle')return circlePolyMTV(B.x,B.y,B.r,bodyCorners(A));
+  return polyPolyMTV(bodyCorners(A),bodyCorners(B));
+}
+
+function resolvePair(A,B){
+  if(A===st.dragBody||B===st.dragBody)return;
+  if(A.static&&B.static)return;
+  var mtv=collideBodies(A,B);
+  if(!mtv)return;
+  var invA=A.static?0:1/A.mass;
+  var invB=B.static?0:1/B.mass;
+  var sum=invA+invB;
+  if(sum<=0)return;
+  var slop=0.005;
+  var percent=0.35;
+  var corr=Math.max(mtv.depth-slop,0)*percent/sum;
+  A.x-=mtv.nx*corr*invA;
+  A.y-=mtv.ny*corr*invA;
+  B.x+=mtv.nx*corr*invB;
+  B.y+=mtv.ny*corr*invB;
+  var rvx=B.vx-A.vx,rvy=B.vy-A.vy;
+  var vn=rvx*mtv.nx+rvy*mtv.ny;
+  if(vn>0)return;
+  var res=0;
+  if(Math.abs(vn)>2.0)res=Math.min(A.res||0.5,B.res||0.5);
+  var j=-(1+res)*vn/sum;
+  var tx=-mtv.ny,ty=mtv.nx;
+  var vt=rvx*tx+rvy*ty;
+  var fri=Math.sqrt((A.fric||0.3)*(B.fric||0.3));
+  var jt=-vt/sum;
+  var maxJt=fri*Math.abs(j);
+  if(jt>maxJt)jt=maxJt;
+  if(jt<-maxJt)jt=-maxJt;
+  A.vx-=j*mtv.nx*invA;
+  A.vy-=j*mtv.ny*invA;
+  B.vx+=j*mtv.nx*invB;
+  B.vy+=j*mtv.ny*invB;
+  A.vx-=jt*tx*invA;
+  A.vy-=jt*ty*invA;
+  B.vx+=jt*tx*invB;
+  B.vy+=jt*ty*invB;
+}
+
+function physicsStep(dt){
+  var i,j,b;
+  var K=650;
+  for(i=0;i<st.bodies.length;i++){
+    b=st.bodies[i];
+    if(b.static)continue;
+    var ax=0,ay=st.g;
+    for(j=0;j<st.bodies.length;j++){
+      if(i===j)continue;
+      var o=st.bodies[j];
+      if(b.chg&&o.chg){
+        var dx=o.x-b.x,dy=o.y-b.y;
+        var r2=dx*dx+dy*dy+0.01;
+        var r=Math.sqrt(r2);
+        var f=K*b.chg*o.chg/r2;
+        if(f>500)f=500;if(f<-500)f=-500;
+        ax+=f*dx/r;ay+=f*dy/r;
+      }
+    }
+    b.vx+=ax*dt;
+    b.vy+=ay*dt;
+    var damp=Math.exp(-1.2*dt);
+    b.vx*=damp;b.vy*=damp;
+    var v=Math.hypot(b.vx,b.vy);
+    if(v>50){b.vx*=50/v;b.vy*=50/v;}
+    b.x+=b.vx*dt;
+    b.y+=b.vy*dt;
+    if(b.canRotate&&b.shape==='rect'){
+      b.angle+=(b.av||0)*dt;
+      b.av=(b.av||0)*Math.exp(-2.5*dt);
+    }
+    if(!isFinite(b.x)||!isFinite(b.y)){b.x=0;b.y=1.6;b.vx=0;b.vy=0;b.av=0;}
+  }
+  for(var iter=0;iter<4;iter++){
+    for(var i1=0;i1<st.bodies.length;i1++){
+      for(var i2=i1+1;i2<st.bodies.length;i2++){
+        var A=st.bodies[i1],B=st.bodies[i2];
+        if(A.static&&B.static)continue;
+        if(A===st.dragBody||B===st.dragBody)continue;
+        resolvePair(A,B);
+      }
+    }
+  }
+}
+
+function follow(){
+  if(!st.follow)return;
+  var n=0,mx=0,my=0;
+  for(var i=0;i<st.bodies.length;i++){
+    var b=st.bodies[i];
+    if(b.static)continue;
+    if(!isFinite(b.x)||!isFinite(b.y))continue;
+    mx+=b.x;my+=b.y;n++;
+  }
+  if(!n)return;
+  mx/=n;my/=n;
+  var maxD=2;
+  for(var j=0;j<st.bodies.length;j++){
+    var bb=st.bodies[j];
+    if(bb.static)continue;
+    if(!isFinite(bb.x)||!isFinite(bb.y))continue;
+    var d=Math.hypot(bb.x-mx,bb.y-my);
+    if(bb.shape==='circle')d+=bb.r;
+    else d+=Math.hypot(bb.w,bb.h)/2;
+    if(d>maxD)maxD=d;
+  }
+  var targetScale=Math.min(W,H)*0.36/maxD;
+  targetScale=Math.max(12,Math.min(200,targetScale));
+  var k=0.10;
+  st.cx+=(mx-st.cx)*k;
+  st.cy+=(my-st.cy)*k;
+  st.scale+=(targetScale-st.scale)*k;
+}
+
+/* ===== 修复：地面渲染与物理边界完全重合 ===== */
+function drawGround(g){
+  /* 物理边界：世界 y ∈ [g.y - g.h/2, g.y + g.h/2] */
+  var topS=sy(g.y+g.h/2);   /* 顶面屏幕 y（y 值大 -> 屏幕靠上） */
+  var botS=sy(g.y-g.h/2);   /* 底面屏幕 y */
+  var ht=botS-topS;
+  /* 填充主体 */
+  ctx.fillStyle='rgba(130,140,160,0.35)';
+  ctx.fillRect(0,topS,W,ht);
+  /* 上下边界线 */
+  ctx.strokeStyle='rgba(180,195,220,0.85)';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(0,topS);ctx.lineTo(W,topS);
+  ctx.moveTo(0,botS);ctx.lineTo(W,botS);
+  ctx.stroke();
+  /* 顶面高亮：细线强调 */
+  ctx.strokeStyle='rgba(220,235,255,0.55)';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(0,topS);ctx.lineTo(W,topS);ctx.stroke();
+  /* 底面下方的倾斜斑马线 */
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0,botS,W,22);
+  ctx.clip();
+  ctx.strokeStyle='rgba(150,165,190,0.4)';
+  ctx.lineWidth=1;
+  for(var xx=-20;xx<W+20;xx+=10){
+    ctx.beginPath();
+    ctx.moveTo(xx,botS);
+    ctx.lineTo(xx+12,botS+12);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawWall(w){
+  var corners=bodyCorners(w);if(!corners)return;
+  var sp=corners.map(function(p){return{x:sx(p.x),y:sy(p.y)};});
+  ctx.beginPath();ctx.moveTo(sp[0].x,sp[0].y);
+  for(var i=1;i<4;i++)ctx.lineTo(sp[i].x,sp[i].y);
+  ctx.closePath();
+  ctx.fillStyle='rgba(130,140,160,0.35)';ctx.fill();
+  ctx.strokeStyle='rgba(180,195,220,0.8)';ctx.lineWidth=1.5;ctx.stroke();
+  var p1=sp[3],p2=sp[0];
+  var dx=p2.x-p1.x,dy=p2.y-p1.y,len=Math.hypot(dx,dy);
+  if(len<1)return;
+  var ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+  var cx4=(sp[0].x+sp[1].x+sp[2].x+sp[3].x)/4,cy4=(sp[0].y+sp[1].y+sp[2].y+sp[3].y)/4;
+  var vx2=(p1.x+p2.x)/2-cx4,vy2=(p1.y+p2.y)/2-cy4;
+  if(nx*vx2+ny*vy2<0){nx=-nx;ny=-ny;}
+  ctx.save();ctx.beginPath();
+  ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p2.x+nx*10,p2.y+ny*10);ctx.lineTo(p1.x+nx*10,p1.y+ny*10);ctx.closePath();ctx.clip();
+  ctx.strokeStyle='rgba(150,165,190,0.4)';ctx.lineWidth=1;
+  for(var t=-20;t<len+20;t+=10){
+    var fx=p1.x+ux*t,fy=p1.y+uy*t;
+    ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(fx+nx*12+ux*12,fy+ny*12+uy*12);ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawB(b){
+  var k=st.scale;
+  if(!isFinite(k)||!isFinite(b.x)||!isFinite(b.y))return;
+  if(b.shape==='circle'){
+    var r=b.r*k;if(r<0.5)return;
+    var x=sx(b.x),y=sy(b.y);
+    if(k>=4){
+      var g=ctx.createRadialGradient(x-r*.3,y-r*.3,r*.1,x,y,r);
+      g.addColorStop(0,'hsl('+hue(b.id)+',85%,72%)');g.addColorStop(.55,'hsl('+hue(b.id)+',70%,52%)');g.addColorStop(1,'hsl('+hue(b.id)+',65%,30%)');
+      ctx.beginPath();ctx.arc(x,y,r,0,6.2832);ctx.fillStyle=g;ctx.fill();
+    }else{ctx.beginPath();ctx.arc(x,y,Math.max(1.2,r),0,6.2832);ctx.fillStyle='hsl('+hue(b.id)+',70%,55%)';ctx.fill();}
+    ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1;ctx.stroke();
+    if(k>=8&&b.chg){ctx.fillStyle='#fff';ctx.font='bold '+(r*.55)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.chg>0?'+':'−',x,y+1);}
+  }else{
+    var corners=bodyCorners(b);if(!corners)return;
+    var sp=corners.map(function(p){return{x:sx(p.x),y:sy(p.y)};});
+    ctx.beginPath();ctx.moveTo(sp[0].x,sp[0].y);
+    for(var i=1;i<4;i++)ctx.lineTo(sp[i].x,sp[i].y);
+    ctx.closePath();
+    ctx.fillStyle='hsl('+hue(b.id)+',55%,44%)';ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=1;ctx.stroke();
+    if(k>=6&&b.chg){
+      var cx2=sx(b.x),cy2=sy(b.y);
+      ctx.fillStyle='#fff';ctx.font='bold '+Math.min(Math.min(b.w,b.h)*k*.5,16)+'px sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(b.chg>0?'+':'−',cx2,cy2+1);
+    }
+  }
+  if(b===st.sel&&k>=5){
+    ctx.strokeStyle='rgba(255,255,255,.65)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    if(b.shape==='circle'){ctx.beginPath();ctx.arc(sx(b.x),sy(b.y),b.r*k+4,0,6.2832);ctx.stroke();}
+    else{
+      var cor=bodyCorners(b);
+      if(cor){
+        var s2=cor.map(function(p){return{x:sx(p.x),y:sy(p.y)};});
+        ctx.beginPath();ctx.moveTo(s2[0].x,s2[0].y);
+        for(var ii=1;ii<4;ii++)ctx.lineTo(s2[ii].x,s2[ii].y);
+        ctx.closePath();ctx.stroke();
+      }
+    }
+    ctx.setLineDash([]);
+  }
+}
+function draw(){
+  ctx.fillStyle='#0b0e13';ctx.fillRect(0,0,W,H);
+  var step=40/st.scale;
+  while(step<1)step*=2;while(step>4)step/=2;
+  var gx0=Math.floor(wxScreen(0)/step)*step,gx1=Math.ceil(wxScreen(W)/step)*step;
+  ctx.strokeStyle='rgba(255,255,255,.045)';ctx.lineWidth=1;ctx.beginPath();
+  for(var gx=gx0;gx<=gx1;gx+=step){ctx.moveTo(sx(gx),0);ctx.lineTo(sx(gx),H);}
+  var gy0=Math.floor(wyScreen(H)/step)*step,gy1=Math.ceil(wyScreen(0)/step)*step;
+  for(var gy=gy0;gy<=gy1;gy+=step){ctx.moveTo(0,sy(gy));ctx.lineTo(W,sy(gy));}
+  ctx.stroke();
+  ctx.strokeStyle='rgba(120,160,255,.22)';ctx.lineWidth=1;
+  if(wxScreen(0)>=-20&&wxScreen(0)<=W+20){ctx.beginPath();ctx.moveTo(sx(0),0);ctx.lineTo(sx(0),H);ctx.stroke();}
+  if(wyScreen(0)>=-20&&wyScreen(0)<=H+20){ctx.beginPath();ctx.moveTo(0,sy(0));ctx.lineTo(W,sy(0));ctx.stroke();}
+  for(var i=0;i<st.bodies.length;i++){
+    var b=st.bodies[i];
+    if(b.shape==='wall'){
+      if(b.isGround)drawGround(b);else drawWall(b);
+    }
+  }
+  for(var j=0;j<st.bodies.length;j++){
+    var d=st.bodies[j];
+    if(d.shape!=='wall')drawB(d);
+  }
+}
+function hitTest(px,py){
+  var wx2=wxScreen(px),wy2=wyScreen(py);
+  for(var i=st.bodies.length-1;i>=0;i--){
+    var b=st.bodies[i];
+    if(b.shape==='wall'&&b.isGround)continue;
+    if(b.shape==='circle'){if(Math.hypot(b.x-wx2,b.y-wy2)<=b.r)return b;}
+    else{var cor=bodyCorners(b);if(cor&&pointInPoly(wx2,wy2,cor))return b;}
+  }
+  return null;
+}
+function pointInPoly(px,py,poly){
+  var c=false;
+  for(var i=0,j=poly.length-1;i<poly.length;j=i++){
+    var xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y;
+    if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))c=!c;
+  }
+  return c;
+}
+
+var grab=null,grabOff=null,pan=null,lastP=null;
+cv.addEventListener('pointerdown',function(e){
+  if(e.cancelable)e.preventDefault();
+  try{cv.setPointerCapture(e.pointerId);}catch(x){}
+  var r=cv.getBoundingClientRect();
+  var px=e.clientX-r.left,py=e.clientY-r.top;
+  var b=hitTest(px,py);
+  if(b){
+    grab=b;st.dragBody=b;
+    grabOff={x:wxScreen(px)-b.x,y:wyScreen(py)-b.y};
+    lastP={x:px,y:py};
+    cv.style.cursor='grabbing';
+    if(b!==st.sel){st.sel=b;rList();rInfo();}
+  }else{
+    pan={x:px,y:py};st.sel=null;rList();rInfo();
+  }
+});
+cv.addEventListener('pointermove',function(e){
+  var r=cv.getBoundingClientRect();
+  var px=e.clientX-r.left,py=e.clientY-r.top;
+  if(grab){
+    grab.x=wxScreen(px)-grabOff.x;
+    grab.y=wyScreen(py)-grabOff.y;
+    var dx=px-(lastP?lastP.x:px),dy=py-(lastP?lastP.y:py);
+    if(lastP&&(Math.abs(dx)>0||Math.abs(dy)>0)){
+      grab.vx=dx/st.scale*120;grab.vy=-dy/st.scale*120;
+    }
+    lastP={x:px,y:py};
+  }else if(pan){
+    st.cx-=(px-pan.x)/st.scale;
+    st.cy+=(py-pan.y)/st.scale;
+    pan={x:px,y:py};
+  }
+});
+function endPointer(){grab=null;st.dragBody=null;pan=null;lastP=null;cv.style.cursor='';}
+cv.addEventListener('pointerup',endPointer);
+cv.addEventListener('pointercancel',endPointer);
+cv.addEventListener('lostpointercapture',endPointer);
+
+/* ===== 修复：滚轮缩放以屏幕中心为基准 ===== */
+cv.addEventListener('wheel',function(e){
+  e.preventDefault();
+  var d=e.deltaY;
+  if(e.deltaMode===1)d*=16;else if(e.deltaMode===2)d*=400;
+  var f=Math.exp(-d*0.0012);
+  /* 以屏幕中心为基准：仅改 scale，cx/cy 保持不变 */
+  st.scale=Math.max(3,Math.min(300,st.scale*f));
+},{passive:false});
+
+/* ===== 修复：双指缩放也以屏幕中心为基准 ===== */
+cv.addEventListener('touchstart',function(e){
+  if(e.touches.length===2){
+    var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    st.pinch=d;
+  }
+},{passive:true});
+cv.addEventListener('touchmove',function(e){
+  if(e.touches.length===2&&st.pinch){
+    e.preventDefault();
+    var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    var f=d/(st.pinch||1);st.pinch=d;
+    st.scale=Math.max(3,Math.min(300,st.scale*f));
+  }
+},{passive:false});
+cv.addEventListener('touchend',function(){st.pinch=0;});
+cv.addEventListener('dblclick',function(e){
+  e.preventDefault();
+  var r=cv.getBoundingClientRect();
+  st.sel=hitTest(e.clientX-r.left,e.clientY-r.top);
+  rList();rInfo();
+});
+
+function isTextInput(el){
+  if(!el)return false;
+  var tag=(el.tagName||'').toUpperCase();
+  if(tag==='TEXTAREA')return true;
+  if(tag==='INPUT'){
+    var t=(el.type||'text').toLowerCase();
+    if(t==='text'||t==='number'||t==='search'||t==='email'||t==='password'||t==='tel'||t==='url')return true;
+  }
+  if(el.isContentEditable)return true;
+  return false;
+}
+function onKeyDown(e){
+  if(!cv.isConnected)return;
+  if(isTextInput(e.target))return;
+  var k=e.key.toLowerCase();
+  if(k==='w'||k==='a'||k==='s'||k==='d'){
+    keys[k]=true;
+    if(st.follow){
+      st.follow=false;
+      var fol=root.querySelector('#pfol');
+      if(fol)fol.checked=false;
+    }
+    e.preventDefault();
+  }
+}
+function onKeyUp(e){
+  if(!cv.isConnected)return;
+  var k=e.key.toLowerCase();
+  if(k==='w'||k==='a'||k==='s'||k==='d'){
+    keys[k]=false;
+    e.preventDefault();
+  }
+}
+window.addEventListener('keydown',onKeyDown);
+window.addEventListener('keyup',onKeyUp);
+window.addEventListener('blur',function(){keys={};});
+document.addEventListener('visibilitychange',function(){if(document.hidden)keys={};});
+
+function tick(){
+  raf=null;
+  if(!cv.isConnected)return;
+  if(st.run){
+    var dt=1/60;
+    var sub=5,sdt=dt/sub;
+    for(var s=0;s<sub;s++)physicsStep(sdt);
+    var ms=st.wasdSens;
+    var moving=false;
+    if(keys['w']){st.cy+=ms*dt/st.scale;moving=true;}
+    if(keys['s']){st.cy-=ms*dt/st.scale;moving=true;}
+    if(keys['a']){st.cx-=ms*dt/st.scale;moving=true;}
+    if(keys['d']){st.cx+=ms*dt/st.scale;moving=true;}
+    if(!moving&&st.follow)follow();
+  }
+  draw();
+  requestAnimationFrame(tick);
+}
+
+function addGround(){
+  st.bodies.push(mkBody({shape:'wall',x:0,y:0,w:1e6,h:0.4,angle:0,mass:Infinity,fric:0.4,res:0.4,static:true}));
+  var g=st.bodies[st.bodies.length-1];
+  g.isGround=true;
+}
+function seed(){
+  st.bodies=[];
+  addGround();
+  st.bodies.push(mkBody({shape:'circle',x:-1,y:5,r:.45,mass:1,fric:.25,res:.55,chg:0,vx:0,vy:0}));
+  st.bodies.push(mkBody({shape:'circle',x:1,y:7,r:.32,mass:.6,fric:.2,res:.6,chg:2,vx:1.5,vy:0}));
+  st.bodies.push(mkBody({shape:'rect',x:-2.5,y:9,w:1.2,h:0.5,angle:0,mass:2,fric:.4,res:.4,chg:0,vx:.4,vy:0,canRotate:true}));
+}
+
+var gravEl=root.querySelector('#pgrav'),gravVal=root.querySelector('#pgravv');
+gravEl.addEventListener('input',function(){st.g=parseFloat(this.value);gravVal.textContent=st.g.toFixed(1);});
+var wasdEl=root.querySelector('#pwasd'),wasdVal=root.querySelector('#pwasdv');
+wasdEl.addEventListener('input',function(){
+  var v=parseFloat(this.value);
+  if(v<1)v=1;
+  st.wasdSens=v;
+  wasdVal.textContent=v.toFixed(0);
+});
+root.querySelector('#prun').addEventListener('click',function(){st.run=!st.run;this.textContent=st.run?'⏸ 暂停':'▶ 运行';});
+root.querySelector('#pclr').addEventListener('click',function(){st.bodies=[];st.sel=null;rList();rInfo();});
+root.querySelector('#porg').addEventListener('click',function(){st.cx=0;st.cy=0;st.scale=50;});
+root.querySelector('#pfol').addEventListener('change',function(){st.follow=this.checked;});
+root.querySelector('#pground').addEventListener('click',function(){
+  st.bodies=st.bodies.filter(function(b){return !b.isGround;});
+  addGround();
+  rList();rInfo();
+});
+
+function rList(){
+  var l=root.querySelector('#plist');l.innerHTML='';
+  if(!st.bodies.length){l.innerHTML='<span style="color:var(--dim);font-size:12px">画布为空，点击「添加物体」创建</span>';return;}
+  st.bodies.forEach(function(b){
+    var ch=document.createElement('span');ch.className='chip'+(b===st.sel?' on':'');
+    var nm=b.shape==='circle'?'圆':(b.shape==='wall'?(b.isGround?'地面':'墙体'):'矩形');
+    var info=b.shape==='circle'?('r='+b.r.toFixed(2)):('m='+b.mass+(b.chg?' q='+b.chg:''));
+    if(b.static)info='静止';
+    ch.innerHTML='<i style="width:9px;height:9px;border-radius:2px;background:hsl('+hue(b.id)+',70%,55%);display:inline-block"></i><b>'+nm+'</b><em style="font-style:normal;color:var(--dim);font-size:11px">'+info+'</em><button title="删除">×</button>';
+    ch.addEventListener('click',function(ev){
+      if(ev.target.tagName==='BUTTON'){
+        var i=st.bodies.indexOf(b);
+        if(i>=0){st.bodies.splice(i,1);if(st.sel===b)st.sel=null;rList();rInfo();return;}
+      }
+      st.sel=(st.sel===b)?null:b;rList();rInfo();
+    });
+    l.appendChild(ch);
+  });
+}
+function rInfo(){
+  var el=root.querySelector('#pinfo');
+  var base='场景：'+st.bodies.length+' 个物体';
+  if(st.sel){
+    var b=st.sel;
+    var nm=b.shape==='circle'?'圆形':(b.shape==='wall'?(b.isGround?'地面':'墙体'):'矩形');
+    base+=' · 选中：'+nm;
+    if(!b.static){base+='，质量 '+b.mass+'，μ='+b.fric+'，e='+b.res+'，q='+b.chg;}
+    if(b.shape==='rect')base+='，角度 '+(b.angle*180/Math.PI).toFixed(1)+'°';
+  }
+  el.textContent=base;
+}
+
+var mask=root.querySelector('#pmask');
+var fsh=root.querySelector('#fsh');
+var fpre=root.querySelector('#fpre');
+var fpw=root.querySelector('#fpw');
+var fph=root.querySelector('#fph');
+var frot=root.querySelector('#frot');
+var fwl=root.querySelector('#fwl');
+var fwt=root.querySelector('#fwt');
+var fang=root.querySelector('#fang');
+var fsecCircle=root.querySelector('#fsec_circle');
+var fsecRect=root.querySelector('#fsec_rect');
+var fsecWall=root.querySelector('#fsec_wall');
+var fsecDyn=root.querySelector('#fsec_dyn');
+function updModal(){
+  var s=fsh.value;
+  fsecCircle.style.display=s==='circle'?'':'none';
+  fsecRect.style.display=s==='rect'?'':'none';
+  fsecWall.style.display=s==='wall'?'':'none';
+  fsecDyn.style.display=s==='wall'?'none':'';
+}
+fsh.addEventListener('change',updModal);
+fpre.addEventListener('change',function(){
+  var v=this.value;if(!v)return;
+  var parts=v.split(',');
+  fpw.value=parts[0];fph.value=parts[1];
+});
+root.querySelector('#padd').addEventListener('click',function(){mask.classList.add('show');updModal();});
+root.querySelector('#fcx').addEventListener('click',function(){mask.classList.remove('show');});
+mask.addEventListener('click',function(e){if(e.target===mask)mask.classList.remove('show');});
+root.querySelector('#fok').addEventListener('click',function(){
+  var s=fsh.value;
+  var angleDeg=parseFloat(fang.value);if(!isFinite(angleDeg))angleDeg=0;
+  if(angleDeg<0)angleDeg=0;if(angleDeg>180)angleDeg=180;
+  var angleRad=angleDeg*Math.PI/180;
+  var fric=parseFloat(root.querySelector('#ffric').value);
+  if(!isFinite(fric)||fric<0||fric>1)fric=0.3;
+  /* 生成点：视图中心上方至少 2 单位，避免生成在地面内部 */
+  var spawnY=Math.max(st.cy+2,2.5);
+  var o={shape:s,x:st.cx+(Math.random()-0.5)*2,y:spawnY,angle:angleRad,fric:fric,vx:0,vy:0};
+  if(s==='circle'){
+    var r=parseFloat(root.querySelector('#fpr').value);
+    if(!isFinite(r)||r<=0){alert('半径无效');return;}
+    o.r=r;
+    var mass=parseFloat(root.querySelector('#fmass').value);
+    if(!isFinite(mass)||mass<=0){alert('质量无效');return;}
+    o.mass=mass;
+    o.res=parseFloat(root.querySelector('#fres').value)||0.5;
+    o.chg=parseFloat(root.querySelector('#fchg').value)||0;
+    o.vx=parseFloat(root.querySelector('#fvx').value)||0;
+    o.vy=parseFloat(root.querySelector('#fvy').value)||0;
+    o.canRotate=false;
+    st.bodies.push(mkBody(o));
+  }else if(s==='rect'){
+    var w=parseFloat(fpw.value),h=parseFloat(fph.value);
+    if(!isFinite(w)||w<=0||!isFinite(h)||h<=0){alert('宽高无效');return;}
+    o.w=w;o.h=h;
+    var mass2=parseFloat(root.querySelector('#fmass').value);
+    if(!isFinite(mass2)||mass2<=0){alert('质量无效');return;}
+    o.mass=mass2;
+    o.res=parseFloat(root.querySelector('#fres').value)||0.5;
+    o.chg=parseFloat(root.querySelector('#fchg').value)||0;
+    o.vx=parseFloat(root.querySelector('#fvx').value)||0;
+    o.vy=parseFloat(root.querySelector('#fvy').value)||0;
+    o.canRotate=frot.checked;
+    st.bodies.push(mkBody(o));
+  }else{
+    var L=parseFloat(fwl.value),T=parseFloat(fwt.value);
+    if(!isFinite(L)||L<=0||!isFinite(T)||T<=0){alert('长度/厚度无效');return;}
+    o.w=L;o.h=T;o.mass=Infinity;o.static=true;o.canRotate=false;
+    st.bodies.push(mkBody(o));
+  }
+  mask.classList.remove('show');
+  rList();rInfo();
+});
+
+rs();seed();rList();rInfo();requestAnimationFrame(tick);
+if(typeof ResizeObserver!=='undefined'){var ro=new ResizeObserver(rs);ro.observe(cv.parentElement);}else window.addEventListener('resize',rs);
+}};}});
+
+/* ===== 化学计算器（前4周期 · Unicode角标 · 自动配平 · 燃烧/电极 · 产物分组预测） ===== */
+App.register({id:'chemcalc',name:'化学计算器',icon:'⚗️',desc:'元素周期表键盘 · 自动角标 · 自动配平 · 燃烧/电极 · 产物分组预测',factory:function(){return{render:function(root){
+if(!document.getElementById('cc-styles')){
+var sty=document.createElement('style');sty.id='cc-styles';
+sty.textContent='.cc-wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}'
++'.cc-box{background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden;}'
++'.cc-input{width:100%;min-height:96px;max-height:60vh;overflow-y:auto;background:transparent;border:0;padding:18px 20px;color:var(--fg);font-family:"Times New Roman",Georgia,"PingFang SC",serif;font-size:26px;outline:none;line-height:1.8;letter-spacing:.5px;display:block;white-space:pre-wrap;word-break:break-all;caret-color:var(--accent);}'
++'.cc-input:empty::before{content:attr(data-placeholder);color:#4d5765;font-size:15px;font-family:-apple-system,sans-serif;letter-spacing:0;}'
++'.cc-input .sp-valid{color:#e6edf3;}'
++'.cc-input .sp-invalid{color:#ff7b7b;}'
++'.cc-input .cc-op{color:#9fc3ff;padding:0 5px;font-family:Consolas,monospace;font-size:.85em;}'
++'.cc-input .cc-sub{font-size:.62em;vertical-align:sub;line-height:0;}'
++'.cc-input .cc-sup{font-size:.62em;vertical-align:super;line-height:0;}'
++'.cc-msg{padding:0 6px;font-size:12px;color:var(--dim);min-height:16px;white-space:pre-line;}'
++'.cc-msg.err{color:var(--danger);}'
++'.cc-msg.ok{color:var(--green);}'
++'.cc-kb{display:grid;grid-template-columns:repeat(18,minmax(32px,1fr));gap:3px;padding:12px;touch-action:manipulation;}'
++'.cc-key{padding:6px 2px;border-radius:6px;background:var(--bg3);border:1px solid var(--line);color:var(--fg);font-size:12px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;text-align:center;min-height:36px;display:flex;align-items:center;justify-content:center;font-family:Consolas,monospace;font-weight:500;transition:background .1s,transform .08s;}'
++'.cc-key:hover{background:#232c38;border-color:#33404f;}'
++'.cc-key:active{background:#2b3644;transform:scale(.94);}'
++'.cc-key.elem{color:#e6edf3;font-weight:600;}'
++'.cc-key.elem-metal{border-style:dashed;border-color:#4c8dff;}'
++'.cc-key.elem-nonmetal{border-style:dashed;border-color:#ffc46b;}'
++'.cc-key.op{color:#ffc46b;font-size:15px;}'
++'.cc-key.num{color:#3fd39b;font-weight:600;}'
++'.cc-key.fn{color:#9fc3ff;font-size:11.5px;font-weight:600;letter-spacing:.3px;}'
++'.cc-key.fn.dashed{border-style:dashed;border-color:#9fc3ff;}'
++'.cc-key.fn.wide{background:rgba(76,141,255,.18);border-color:rgba(76,141,255,.45);color:#cfe0ff;}'
++'.cc-key.fn.wide:hover{background:rgba(76,141,255,.32);}'
++'.cc-key.fn.burn{background:rgba(255,123,123,.16);border-color:rgba(255,123,123,.5);color:#ffb0b0;}'
++'.cc-key.fn.burn:hover{background:rgba(255,123,123,.3);}'
++'.cc-key.fn.elec{background:rgba(63,211,155,.16);border-color:rgba(63,211,155,.5);color:#9ff0cd;}'
++'.cc-key.fn.elec:hover{background:rgba(63,211,155,.3);}'
++'.cc-predict{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--dim);min-height:0;touch-action:manipulation;}'
++'.cc-predict:empty{display:none;}'
++'.cc-predict-label{color:#9fc3ff;font-weight:600;margin-right:4px;}'
++'.cc-predict-btn{padding:6px 14px;border-radius:7px;border:1px solid rgba(63,211,155,.5);background:rgba(63,211,155,.12);color:#9ff0cd;font-family:"Times New Roman",Georgia,serif;font-size:16px;cursor:pointer;transition:.15s;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}'
++'.cc-predict-btn:hover{background:rgba(63,211,155,.28);}'
++'.cc-predict-btn .cc-sub{font-size:.62em;vertical-align:sub;line-height:0;}'
++'.cc-predict-btn .cc-sup{font-size:.62em;vertical-align:super;line-height:0;}'
++'.cc-predict-btn .cc-plus{color:#9fc3ff;padding:0 6px;font-family:Consolas,monospace;font-size:.8em;}'
++'@media (max-width:760px){.cc-kb{grid-template-columns:repeat(18,minmax(24px,1fr));gap:2px;padding:8px;}.cc-key{font-size:10px;padding:4px 1px;min-height:30px;border-radius:5px;}.cc-key.fn{font-size:9px;}.cc-input{font-size:20px;min-height:70px;padding:12px 14px;}.cc-predict-btn{font-size:14px;padding:5px 10px;}}';
+document.head.appendChild(sty);}
+
+var ZWSP='\u200B';
+function isSp(c){return c===' '||c==='\t'||c===ZWSP;}
+function trimZW(s){return s.replace(/^[\s\u200B]+|[\s\u200B]+$/g,'');}
+function cleanZW(s){
+s=s.replace(/[\u200B]+/g,ZWSP);
+s=s.replace(/^\u200B+/,'');
+s=s.replace(/\u200B([+\-=()])/g,'$1');
+s=s.replace(/([+\-=()])\u200B/g,'$1');
+return s;}
+
+var ELEM_FEATURES={
+H:{ve:1,en:2.20,val:1},He:{ve:2,en:null,val:0},
+Li:{ve:1,en:0.98,val:1},Be:{ve:2,en:1.57,val:2},B:{ve:3,en:2.04,val:3},C:{ve:4,en:2.55,val:4},
+N:{ve:5,en:3.04,val:3},O:{ve:6,en:3.44,val:2},F:{ve:7,en:3.98,val:1},Ne:{ve:8,en:null,val:0},
+Na:{ve:1,en:0.93,val:1},Mg:{ve:2,en:1.31,val:2},Al:{ve:3,en:1.61,val:3},Si:{ve:4,en:1.90,val:4},
+P:{ve:5,en:2.19,val:3},S:{ve:6,en:2.58,val:2},Cl:{ve:7,en:3.16,val:1},Ar:{ve:8,en:null,val:0},
+K:{ve:1,en:0.82,val:1},Ca:{ve:2,en:1.00,val:2},Sc:{ve:3,en:1.36,val:3},Ti:{ve:4,en:1.54,val:4},
+V:{ve:5,en:1.63,val:5},Cr:{ve:6,en:1.66,val:3},Mn:{ve:7,en:1.55,val:2},Fe:{ve:8,en:1.83,val:3},
+Co:{ve:9,en:1.88,val:2},Ni:{ve:10,en:1.91,val:2},Cu:{ve:11,en:1.90,val:2},Zn:{ve:12,en:1.65,val:2},
+Ga:{ve:3,en:1.81,val:3},Ge:{ve:4,en:2.01,val:4},As:{ve:5,en:2.18,val:3},Se:{ve:6,en:2.55,val:2},
+Br:{ve:7,en:2.96,val:1},Kr:{ve:8,en:3.00,val:0}};
+var METALS={Li:1,Be:1,Na:1,Mg:1,Al:1,K:1,Ca:1,Sc:1,Ti:1,V:1,Cr:1,Mn:1,Fe:1,Co:1,Ni:1,Cu:1,Zn:1,Ga:1};
+var OXIDATION_STATES={
+H:[1],Li:[1],Be:[2],B:[3],C:[2,4],N:[2,4,5],F:[-1],
+Na:[1],Mg:[2],Al:[3],Si:[4],P:[3,5],S:[4,6],Cl:[1,5,7],
+K:[1],Ca:[2],Sc:[3],Ti:[4],V:[5],Cr:[3,6],Mn:[2,4,7],Fe:[2,3],
+Co:[2,3],Ni:[2],Cu:[1,2],Zn:[2],Ga:[3],Ge:[4],As:[3,5],Se:[4,6],Br:[1,5,7]};
+
+var PERIODIC={1:{1:'H',18:'He'},2:{1:'Li',2:'Be',13:'B',14:'C',15:'N',16:'O',17:'F',18:'Ne'},3:{1:'Na',2:'Mg',13:'Al',14:'Si',15:'P',16:'S',17:'Cl',18:'Ar'},4:{1:'K',2:'Ca',3:'Sc',4:'Ti',5:'V',6:'Cr',7:'Mn',8:'Fe',9:'Co',10:'Ni',11:'Cu',12:'Zn',13:'Ga',14:'Ge',15:'As',16:'Se',17:'Br',18:'Kr'}};
+var ALL_ELEMS={};Object.keys(PERIODIC).forEach(function(r){Object.keys(PERIODIC[r]).forEach(function(c){ALL_ELEMS[PERIODIC[r][c]]=1;});});
+
+var SUB='₀₁₂₃₄₅₆₇₈₉';
+var SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+var SUPSIGN={'+':'⁺','-':'⁻','−':'⁻'};
+function toSub(s){var o='';for(var i=0;i<s.length;i++){var c=s[i];var idx='0123456789'.indexOf(c);o+=idx>=0?SUB[idx]:c;}return o;}
+function toSup(s){var o='';for(var i=0;i<s.length;i++){var c=s[i];var idx='0123456789'.indexOf(c);if(idx>=0)o+=SUP[idx];else if(SUPSIGN[c])o+=SUPSIGN[c];else o+=c;}return o;}
+function unicodeToPlain(s){
+return s.replace(/[₀₁₂₃₄₅₆₇₈₉]/g,function(c){return '0123456789'['₀₁₂₃₄₅₆₇₈₉'.indexOf(c)];})
+.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,function(c){return '0123456789'['⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)];})
+.replace(/[⁺⁻]/g,function(c){return c==='⁺'?'+':'-';});}
+
+function matchElement(s,i){
+if(i+1<s.length&&/[a-zA-Z]/.test(s[i])&&/[a-zA-Z]/.test(s[i+1])){
+var two=s[i].toUpperCase()+s[i+1].toLowerCase();
+if(ALL_ELEMS[two])return{sym:two,len:2};}
+var one=s[i].toUpperCase();
+if(ALL_ELEMS[one])return{sym:one,len:1};
+return null;}
+
+function protect(s){
+var result='',i=0;
+while(i<s.length){
+var c=s[i];
+if(/[0-9()]/.test(c)){result+=c;i++;continue;}
+if(i+1<s.length&&/[a-zA-Z]/.test(s[i])&&/[a-zA-Z]/.test(s[i+1])){
+var two=s[i].toUpperCase()+s[i+1].toLowerCase();
+var oneA=s[i].toUpperCase(),oneB=s[i+1].toUpperCase();
+if(ALL_ELEMS[two]&&ALL_ELEMS[oneA]&&ALL_ELEMS[oneB]&&/[A-Z]/.test(s[i+1])){
+result+=oneA+ZWSP;i++;continue;}}
+var el=matchElement(s,i);
+if(el){result+=el.sym;i+=el.len;continue;}
+result+=c;i++;}
+return result;}
+
+function isSeparator(str,i){
+var j=i+1;
+while(j<str.length&&isSp(str[j]))j++;
+if(j>=str.length)return false;
+var c=str[j];
+if(c==='='||c==='+'||c==='-')return false;
+if(c==='e'||c==='E')return false;
+if(/[a-zA-Z(]/.test(c))return true;
+return false;}
+
+function tokenizeRaw(str){
+var tokens=[],i=0;
+while(i<str.length){
+var c=str[i];
+if(isSp(c)){tokens.push({t:'sp'});i++;continue;}
+if(c==='-'&&i+1<str.length&&str[i+1]==='>'){tokens.push({t:'arrow'});i+=2;continue;}
+if(c==='='||c==='→'){tokens.push({t:'arrow'});i++;continue;}
+if(c==='+'||c==='-'||c==='−'){
+var v=c==='−'?'-':c;
+if(isSeparator(str,i))tokens.push({t:'sep',v:v});
+else tokens.push({t:'sign',v:v});
+i++;continue;}
+if(c==='('||c===')'){tokens.push({t:'paren',v:c});i++;continue;}
+if(/[0-9]/.test(c)){var n='';while(i<str.length&&/[0-9]/.test(str[i])){n+=str[i];i++;}tokens.push({t:'num',v:n});continue;}
+if(c==='e'||c==='E'){
+if(i+1<str.length&&(str[i+1]==='⁻'||str[i+1]==='-')){
+if(!(str[i+1]==='-'&&i+2<str.length&&str[i+2]==='>')){
+var nx=str[i+2];
+if(!nx||!/[a-zA-Z]/.test(nx)){tokens.push({t:'electron'});i+=2;continue;}}}}
+var el=matchElement(str,i);
+if(el){tokens.push({t:'elem',v:el.sym});i+=el.len;continue;}
+tokens.push({t:'raw',v:c});i++;}
+return tokens;}
+
+function renderTokensToHTML(tokens){
+var out='',i=0;
+while(i<tokens.length){
+var tk=tokens[i];
+if(tk.t==='elem'){
+out+='<span class="cc-sym">'+tk.v+'</span>';
+if(i+1<tokens.length&&tokens[i+1].t==='num'){
+var num=tokens[i+1].v;
+if(i+2<tokens.length&&tokens[i+2].t==='sign'){
+var sig=tokens[i+2].v;
+var after=i+3<tokens.length?tokens[i+3]:null;
+if(!after||after.t==='sp'||after.t==='sign'||after.t==='sep'||after.t==='arrow'){
+if(num.length===1)out+='<sup class="cc-sup">'+num+sig+'</sup>';
+else out+='<sub class="cc-sub">'+num.slice(0,-1)+'</sub><sup class="cc-sup">'+num.slice(-1)+sig+'</sup>';
+i+=3;continue;}}
+out+='<sub class="cc-sub">'+num+'</sub>';i+=2;continue;}
+if(i+1<tokens.length&&tokens[i+1].t==='sign'){
+var sig2=tokens[i+1].v;
+var after2=i+2<tokens.length?tokens[i+2]:null;
+if(!after2||after2.t==='sp'||after2.t==='sign'||after2.t==='sep'||after2.t==='arrow'){out+='<sup class="cc-sup">'+sig2+'</sup>';i+=2;continue;}}
+i++;continue;}
+if(tk.t==='sp'){
+if(i+1<tokens.length&&tokens[i+1].t==='num'&&i+2<tokens.length&&tokens[i+2].t==='sign'){
+var a3=i+3<tokens.length?tokens[i+3]:null;
+if(!a3||a3.t==='sp'||a3.t==='sign'||a3.t==='sep'||a3.t==='arrow'){out+='<sup class="cc-sup">'+tokens[i+1].v+tokens[i+2].v+'</sup>';i+=3;continue;}}
+if(i+1<tokens.length&&tokens[i+1].t==='sign'){
+var sg=tokens[i+1].v;
+var nx2=i+2<tokens.length?tokens[i+2]:null;
+if(!nx2||nx2.t==='sp'||nx2.t==='sign'||nx2.t==='sep'||nx2.t==='arrow'){out+='<sup class="cc-sup">'+sg+'</sup>';i+=2;continue;}}
+i++;continue;}
+if(tk.t==='num'){out+=tk.v;i++;continue;}
+if(tk.t==='sign'){out+='<span class="cc-sym">'+tk.v+'</span>';i++;continue;}
+if(tk.t==='sep'){out+='<span class="cc-op">'+tk.v+'</span>';i++;continue;}
+if(tk.t==='arrow'){out+='<span class="cc-op">=</span>';i++;continue;}
+if(tk.t==='paren'){
+out+='<span class="cc-sym">'+tk.v+'</span>';
+if(i+1<tokens.length&&tokens[i+1].t==='num'){
+var n2=tokens[i+1].v;
+if(i+2<tokens.length&&tokens[i+2].t==='sign'){
+var s2=tokens[i+2].v;
+var a2=i+3<tokens.length?tokens[i+3]:null;
+if(!a2||a2.t==='sp'||a2.t==='sign'||a2.t==='sep'){out+='<sup class="cc-sup">'+n2+s2+'</sup>';i+=3;continue;}}
+out+='<sub class="cc-sub">'+n2+'</sub>';i+=2;continue;}
+i++;continue;}
+if(tk.t==='electron'){out+='<span class="cc-sym">e</span><sup class="cc-sup">−</sup>';i++;continue;}
+out+=(tk.v||'');i++;}
+return out;}
+
+function tokensToSpeciesText(tokens){
+var out='';
+for(var i=0;i<tokens.length;i++){
+var tk=tokens[i];
+if(tk.t==='elem')out+=tk.v;
+else if(tk.t==='num')out+=tk.v;
+else if(tk.t==='sign')out+=tk.v;
+else if(tk.t==='paren')out+=tk.v;
+else if(tk.t==='sp')out+=ZWSP;
+else if(tk.t==='electron')out+='e⁻';}
+return out;}
+
+function splitSpecies(str){
+var parts=[],current='',i=0;
+while(i<str.length){
+var c=str[i];
+if(c==='-'&&i+1<str.length&&str[i+1]==='>'){
+if(trimZW(current))parts.push(trimZW(current));
+current='';i+=2;continue;}
+if(c==='+'||c==='-'||c==='−'){
+var v=c==='−'?'-':c;
+if(isSeparator(str,i)){
+if(trimZW(current))parts.push(trimZW(current));
+current='';
+}else{current+=v;}
+i++;continue;}
+current+=c;i++;}
+if(trimZW(current))parts.push(trimZW(current));
+return parts.map(function(s){return s.replace(/^\d+/,'');});}
+
+function extractCharge(s){
+var m=s.match(/([+\-])[\s\u200B]*$/);
+if(!m)return{formula:s,charge:0};
+var before=s.slice(0,m.index);
+var nm=before.match(/(\d+)[\s\u200B]*$/);
+var num=nm?parseInt(nm[1],10):1;
+var sign=m[1]==='+'?1:-1;
+var formula=nm?before.slice(0,nm.index):before;
+return{formula:trimZW(formula),charge:num*sign};}
+
+function parseFormula(input){
+var s=input,m=s.match(/^(\d+)/);
+if(m)s=s.slice(m[1].length);
+var counts={},stack=[counts],i=0;
+while(i<s.length){
+var c=s[i];
+if(isSp(c)){i++;continue;}
+if(c==='('){stack.push({});i++;}
+else if(c===')'){
+var grp=stack.pop();i++;
+var num='';while(i<s.length&&/\d/.test(s[i])){num+=s[i];i++;}
+var mlt=num?parseInt(num,10):1;
+var par=stack[stack.length-1];
+for(var k in grp)par[k]=(par[k]||0)+grp[k]*mlt;}
+else if(/[A-Za-z]/.test(c)){
+var el=matchElement(s,i);
+if(!el){i++;continue;}
+i+=el.len;
+var num2='';while(i<s.length&&/\d/.test(s[i])){num2+=s[i];i++;}
+var mult=num2?parseInt(num2,10):1;
+var cur=stack[stack.length-1];
+cur[el.sym]=(cur[el.sym]||0)+mult;}
+else i++;}
+return counts;}
+
+function parseSpecies(s){
+s=trimZW(s);
+if(s==='e⁻'||s==='e-'||s==='e'){return{elements:{},charge:-1,isElectron:true};}
+var ec=extractCharge(s);
+return{elements:parseFormula(ec.formula),charge:ec.charge,isElectron:false};}
+
+function isValidSpecies(sp){
+if(!sp)return true;
+if(!sp.replace(/[\u200B]/g,'').trim())return true;
+var stripped=sp.replace(/[\u200B]/g,'');
+if(stripped==='e'||stripped==='e-'||stripped==='e⁻')return true;
+var ec=extractCharge(sp);
+var comp=parseFormula(ec.formula);
+var keys=Object.keys(comp);
+if(!keys.length)return false;
+for(var i=0;i<keys.length;i++){
+if(!ELEM_FEATURES[keys[i]])return false;}
+if(keys.length===1)return true;
+var total=0;
+for(var j=0;j<keys.length;j++)total+=comp[keys[j]]*ELEM_FEATURES[keys[j]].val;
+var charge=Math.abs(ec.charge);
+if((total%2)!==(charge%2))return false;
+return true;}
+
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a||1;}
+function fracApprox(x,maxDen){
+maxDen=maxDen||2000;
+if(Math.abs(x)<1e-9)return{n:0,d:1};
+var sign=x<0?-1:1;x=Math.abs(x);
+var h0=0,h1=1,k0=1,k1=0,b=x;
+for(var i=0;i<40;i++){
+var a=Math.floor(b);
+var h2=a*h1+h0,k2=a*k1+k0;
+if(k2>maxDen)break;
+h0=h1;h1=h2;k0=k1;k1=k2;
+var rem=b-a;if(rem<1e-12)break;b=1/rem;}
+return{n:sign*h1,d:k1||1};}
+
+function solveLinearSystem(M,m,n){
+var A=M.map(function(row){return row.slice();});
+var pivotCols=[],row=0;
+for(var col=0;col<n&&row<m;col++){
+var maxR=row;
+for(var r=row+1;r<m;r++)if(Math.abs(A[r][col])>Math.abs(A[maxR][col]))maxR=r;
+if(Math.abs(A[maxR][col])<1e-9)continue;
+var tmp=A[row];A[row]=A[maxR];A[maxR]=tmp;
+var pv=A[row][col];
+for(var c=col;c<n;c++)A[row][c]/=pv;
+for(var r2=0;r2<m;r2++){
+if(r2!==row&&Math.abs(A[r2][col])>1e-9){
+var f=A[r2][col];
+for(var c2=col;c2<n;c2++)A[r2][c2]-=f*A[row][c2];}}
+pivotCols.push(col);row++;
+if(row===m)break;}
+var freeCols=[];
+for(var c3=0;c3<n;c3++)if(pivotCols.indexOf(c3)===-1)freeCols.push(c3);
+if(!freeCols.length)return null;
+var sol=new Array(n).fill(0);
+sol[freeCols[0]]=1;
+pivotCols.forEach(function(pc,idx){sol[pc]=-A[idx][freeCols[0]];});
+if(sol.every(function(v){return Math.abs(v)<1e-9;}))return null;
+var fracs=sol.map(function(v){return fracApprox(v);});
+var lcm=1;
+fracs.forEach(function(f){lcm=lcm*f.d/gcd(lcm,f.d);});
+var ints=fracs.map(function(f){return Math.round(f.n*lcm/f.d);});
+var g=0;ints.forEach(function(v){g=gcd(g,Math.abs(v));});
+if(g>0)ints=ints.map(function(v){return v/g;});
+for(var ii=0;ii<ints.length;ii++){
+if(ints[ii]!==0){if(ints[ii]<0)ints=ints.map(function(v){return -v;});break;}}
+if(ints.some(function(v){return v<=0;}))return null;
+return ints;}
+
+function balanceEquation(input){
+var normalized=input.replace(/→|->/g,'=');
+var eqSplit=normalized.split('=');
+if(eqSplit.length!==2)return null;
+var partsL=splitSpecies(eqSplit[0]);
+var partsR=splitSpecies(eqSplit[1]);
+if(!partsL.length||!partsR.length)return null;
+var all=partsL.concat(partsR);
+var parsed=all.map(parseSpecies);
+var elemSet={};
+parsed.forEach(function(p){for(var e in p.elements)elemSet[e]=1;});
+var elems=Object.keys(elemSet);
+var hasCharge=false;
+parsed.forEach(function(p){if(p.charge!==0)hasCharge=true;});
+if(!elems.length&&!hasCharge)return null;
+var rows=elems.length+(hasCharge?1:0);
+var n=all.length;
+var M=[];
+for(var i=0;i<rows;i++)M.push(new Array(n).fill(0));
+parsed.forEach(function(p,j){
+var sign=j<partsL.length?1:-1;
+elems.forEach(function(e,i){if(p.elements[e])M[i][j]=sign*p.elements[e];});
+if(hasCharge)M[elems.length][j]=sign*p.charge;});
+var coefs=solveLinearSystem(M,rows,n);
+if(!coefs)return null;
+return{left:partsL,right:partsR,coefs:coefs};}
+
+/* ===== 氧化剂产物（O2 / F2） ===== */
+function oxidantProduct(elem,composition,oxidant){
+if(oxidant==='O2'){
+if(elem==='C')return'CO2';
+if(elem==='H')return'H2O';
+if(elem==='N')return'N2';
+if(elem==='S')return'SO2';
+if(elem==='P')return'P2O5';
+if(elem==='Si')return'SiO2';
+if(elem==='F'||elem==='Cl'||elem==='Br'){return composition&&composition.H?('H'+elem):(elem+'2');}
+var f=ELEM_FEATURES[elem];
+if(f&&f.val>0&&METALS[elem]){
+var v=f.val;var g=gcd(2,v);var x=2/g,y=v/g;
+return elem+(x>1?x:'')+'O'+(y>1?y:'');}
+return null;}
+if(oxidant==='F2'){
+if(elem==='H')return'HF';
+if(elem==='C')return'CF4';
+if(elem==='N')return'NF3';
+if(elem==='O')return'OF2';
+if(elem==='S')return'SF6';
+if(elem==='P')return'PF5';
+if(elem==='Si')return'SiF4';
+if(elem==='Cl')return'ClF';
+if(elem==='Br')return'BrF3';
+if(elem==='F')return null;
+var f2=ELEM_FEATURES[elem];
+if(f2&&f2.val>0&&METALS[elem]){
+return elem+'F'+(f2.val>1?f2.val:'');}
+return null;}
+return null;}
+
+/* ===== 元素候选产物（用于分组） ===== */
+function productCandidates(elem,oxidant){
+var f=ELEM_FEATURES[elem];
+if(!f)return[];
+if(oxidant==='O2'){
+if(elem==='C')return['CO','CO2'];
+if(elem==='H')return['H2O'];
+if(elem==='N')return['N2'];
+if(elem==='S')return['SO2'];
+if(elem==='P')return['P2O5'];
+if(elem==='Si')return['SiO2'];
+if(elem==='F')return['F2'];
+if(elem==='Cl')return['Cl2'];
+if(elem==='Br')return['Br2'];
+if(f.val>0&&METALS[elem]){
+var v=f.val;var g=gcd(2,v);var x=2/g,y=v/g;
+return[elem+(x>1?x:'')+'O'+(y>1?y:'')];}
+return[];}
+if(oxidant==='F2'){
+if(elem==='H')return['HF'];
+if(elem==='C')return['CF4'];
+if(elem==='N')return['NF3'];
+if(elem==='O')return['OF2'];
+if(elem==='S')return['SF6'];
+if(elem==='P')return['PF5'];
+if(elem==='Si')return['SiF4'];
+if(elem==='Cl')return['ClF'];
+if(elem==='Br')return['BrF3'];
+if(elem==='F')return[];
+if(f.val>0&&METALS[elem]){return[elem+'F'+(f.val>1?f.val:'')];}
+return[];}
+return[];}
+
+/* ===== 构建未配平燃烧方程式 ===== */
+function buildCombustionEq(formula,oxidant){
+var s=formula.replace(/^\d+/,'');
+if(!s)return null;
+var ec=extractCharge(s);
+var comp=parseFormula(ec.formula);
+var products=[];
+Object.keys(comp).forEach(function(e){
+var p=oxidantProduct(e,comp,oxidant);
+if(p&&products.indexOf(p)===-1)products.push(p);});
+if(!products.length)return null;
+var leftStr=protect(s);
+var rightStr=products.map(protect).join(' + ');
+return leftStr+' + '+oxidant+' = '+rightStr;}
+
+/* 返回配平后的燃烧结果对象（含 left / right / coefs），失败返回 null */
+function predictCombustionBalanced(formula){
+var eq=buildCombustionEq(formula,'O2');
+if(eq){var bal=balanceEquation(eq);if(bal&&bal.coefs)return bal;}
+eq=buildCombustionEq(formula,'F2');
+if(eq){var bal2=balanceEquation(eq);if(bal2&&bal2.coefs)return bal2;}
+return null;}
+
+/* ===== 产物分组 ===== */
+function computeProductGroups(reactantsStr,oxidant){
+var species=splitSpecies(reactantsStr);
+if(!species.length)return[];
+var speciesForms=species.map(function(sp){
+var ec=extractCharge(sp);return ec.formula.replace(/[\u200B]/g,'');});
+var elements={};
+species.forEach(function(sp){
+var parsed=parseSpecies(sp);
+var keys=Object.keys(parsed.elements);
+if(keys.length===1&&keys[0]==='O'&&oxidant==='O2')return;
+if(keys.length===1&&keys[0]==='F'&&oxidant==='F2')return;
+for(var e in parsed.elements)elements[e]=1;});
+var candidates=[];
+Object.keys(elements).forEach(function(e){
+if(oxidant==='O2'&&e==='O')return;
+if(oxidant==='F2'&&e==='F')return;
+var list=productCandidates(e,oxidant);
+if(list.length)candidates.push(list);});
+if(!candidates.length)return[];
+var combos=[[]];
+candidates.forEach(function(list){
+var newCombos=[];
+combos.forEach(function(c){
+list.forEach(function(p){var nc=c.slice();nc.push(p);newCombos.push(nc);});});
+combos=newCombos;});
+if(combos.length>6)combos=combos.slice(0,6);
+var seen={},result=[];
+combos.forEach(function(c){
+var uniq=[];
+c.forEach(function(p){if(uniq.indexOf(p)===-1)uniq.push(p);});
+var key=uniq.join('|');
+if(seen[key])return;
+seen[key]=1;
+/* 跳过与反应物完全相同的恒等分组 */
+var isIdentity=uniq.every(function(p){return speciesForms.indexOf(p)!==-1;});
+if(isIdentity)return;
+result.push(uniq);});
+return result;}
+
+function predictProductGroups(reactantsStr){
+var o2Groups=computeProductGroups(reactantsStr,'O2');
+if(o2Groups.length)return o2Groups;
+return computeProductGroups(reactantsStr,'F2');}
+
+/* ===== 电极反应拆分 ===== */
+function electrodeReaction(eq){
+var parts=eq.split('=');
+if(parts.length!==2)return null;
+var leftSp=splitSpecies(parts[0]);
+var rightSp=splitSpecies(parts[1]);
+if(!leftSp.length||!rightSp.length)return null;
+var oxReact=[],redReact=[];
+leftSp.forEach(function(sp){
+var parsed=parseSpecies(sp);
+var els=Object.keys(parsed.elements);
+var isElemO=els.length===1&&els[0]==='O';
+var isElemHal=els.length===1&&(els[0]==='F'||els[0]==='Cl'||els[0]==='Br');
+if(isElemO||isElemHal)redReact.push(sp);else oxReact.push(sp);});
+if(!oxReact.length)oxReact=[leftSp[0]];
+if(!redReact.length)redReact=[leftSp[leftSp.length-1]];
+var oxProd=[],redProd=[];
+rightSp.forEach(function(sp){
+var parsed=parseSpecies(sp);
+var els=Object.keys(parsed.elements);
+var hasO=els.indexOf('O')!==-1,hasC=els.indexOf('C')!==-1,hasH=els.indexOf('H')!==-1;
+if(hasO&&hasH&&!hasC)redProd.push(sp);else oxProd.push(sp);});
+if(!oxProd.length)oxProd=[rightSp[0]];
+if(!redProd.length)redProd=[rightSp[rightSp.length-1]];
+return['氧化: '+oxReact.join(' + ')+' → '+oxProd.join(' + ')+' + ne⁻',
+'还原: '+redReact.join(' + ')+' + ne⁻ → '+redProd.join(' + ')];}
+
+function buildKeyboard(){
+var html='';
+function elemKey(sym,col,row){
+var cls='cc-key elem'+(METALS[sym]?' elem-metal':' elem-nonmetal');
+return'<div class="'+cls+'" data-k="'+sym+'" style="grid-column:'+col+';grid-row:'+row+'">'+sym+'</div>';}
+html+=elemKey('H',1,1);
+for(var d=0;d<=9;d++)html+='<div class="cc-key num" data-k="'+d+'" style="grid-column:'+(2+d)+';grid-row:1">'+d+'</div>';
+html+='<div class="cc-key op" data-k="+" style="grid-column:12;grid-row:1">+</div>';
+html+='<div class="cc-key op" data-k="-" style="grid-column:13;grid-row:1">−</div>';
+html+='<div class="cc-key op" data-k="=" style="grid-column:14;grid-row:1">=</div>';
+html+='<div class="cc-key op" data-k="(" style="grid-column:15;grid-row:1">(</div>';
+html+='<div class="cc-key op" data-k=")" style="grid-column:16;grid-row:1">)</div>';
+html+='<div class="cc-key op" data-k="e⁻" style="grid-column:17;grid-row:1">e⁻</div>';
+html+=elemKey('Li',1,2);
+html+=elemKey('Be',2,2);
+html+='<div class="cc-key fn dashed" data-act="space" style="grid-column:3/5;grid-row:2">分隔</div>';
+html+='<div class="cc-key fn dashed" data-act="back" style="grid-column:5/7;grid-row:2">⌫</div>';
+html+='<div class="cc-key fn dashed" data-act="clear" style="grid-column:7/9;grid-row:2">清空</div>';
+html+='<div class="cc-key fn dashed wide" data-act="balance" style="grid-column:9/11;grid-row:2">配平</div>';
+html+='<div class="cc-key fn dashed burn" data-act="burn" style="grid-column:11/13;grid-row:2">🔥 燃烧</div>';
+['B','C','N','O','F'].forEach(function(sym,idx){html+=elemKey(sym,13+idx,2);});
+html+=elemKey('Na',1,3);
+html+=elemKey('Mg',2,3);
+html+='<div class="cc-key fn dashed elec" data-act="elec" style="grid-column:3/5;grid-row:3">电极</div>';
+['Al','Si','P','S','Cl'].forEach(function(sym,idx){html+=elemKey(sym,13+idx,3);});
+Object.keys(PERIODIC[4]).forEach(function(col){
+if(col==='18')return;
+html+=elemKey(PERIODIC[4][col],col,4);});
+return html;}
+
+root.innerHTML='<div class="cc-wrap">'
++'<div class="cc-box"><div class="cc-input" contenteditable="true" id="ccInput" data-placeholder="输入化学式或方程式，每行一个，回车换行。" spellcheck="false" autocorrect="off" autocapitalize="off"></div></div>'
++'<div class="cc-msg" id="ccMsg"></div>'
++'<div class="cc-box"><div class="cc-kb" id="ccKb">'+buildKeyboard()+'</div></div>'
++'<div class="cc-predict" id="ccPredict"></div>'
++'</div>';
+
+var inputEl=root.querySelector('#ccInput');
+var msgEl=root.querySelector('#ccMsg');
+var predictEl=root.querySelector('#ccPredict');
+var kbEl=root.querySelector('#ccKb');
+var refreshing=false;
+var lastOffset=0;
+
+function getInputText(){
+var text='';
+function walk(node){
+if(node.nodeType===3){text+=node.nodeValue;}
+else if(node.nodeName==='BR'){text+='\n';}
+else if(node.nodeType===1){
+for(var i=0;i<node.childNodes.length;i++)walk(node.childNodes[i]);}}
+for(var i=0;i<inputEl.childNodes.length;i++)walk(inputEl.childNodes[i]);
+return text;}
+
+function processText(text){
+text=text.replace(/[ \t]+/g,ZWSP);
+text=cleanZW(text);
+text=unicodeToPlain(text);
+/* 每行应用 protect 消除多字母元素歧义 */
+var lines=text.split('\n');
+lines=lines.map(function(l){return protect(l);});
+return lines.join('\n');}
+
+function setInputText(text){
+var processed=processText(text);
+inputEl.innerHTML=renderInputHTML(processed)||'';
+lastOffset=processed.length;}
+
+function setInputTextWithOffset(text,offset){
+var processed=processText(text);
+inputEl.innerHTML=renderInputHTML(processed)||'';
+lastOffset=Math.min(offset,processed.length);
+if(document.activeElement===inputEl){setCursorTextOffset(lastOffset);}}
+
+function renderInputHTML(text){
+if(!text)return'';
+var lines=text.split('\n');
+var parts=[];
+for(var i=0;i<lines.length;i++)parts.push(renderLineHTML(lines[i]));
+return parts.join('<br>');}
+
+function renderLineHTML(line){
+if(!line)return'';
+var tokens=tokenizeRaw(line);
+var segs=[],current=[];
+for(var i=0;i<tokens.length;i++){
+var tk=tokens[i];
+if(tk.t==='sep'||tk.t==='arrow'){
+segs.push({type:'species',tokens:current});
+segs.push({type:'op',text:(tk.t==='arrow'?'=':tk.v)});
+current=[];}
+else current.push(tk);}
+segs.push({type:'species',tokens:current});
+var html='';
+for(var j=0;j<segs.length;j++){
+var sg=segs[j];
+if(sg.type==='op'){html+='<span class="cc-op">'+escapeHtml(sg.text)+'</span>';continue;}
+var spText=tokensToSpeciesText(sg.tokens);
+var cls=isValidSpecies(spText)?'sp-valid':'sp-invalid';
+html+='<span class="'+cls+'">'+renderTokensToHTML(sg.tokens)+'</span>';}
+return html;}
+
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function getCursorTextOffset(){
+var sel=window.getSelection();
+if(!sel.rangeCount)return lastOffset;
+var range=sel.getRangeAt(0);
+if(!inputEl.contains(range.startContainer))return lastOffset;
+var pre=document.createRange();
+pre.selectNodeContents(inputEl);
+pre.setEnd(range.startContainer,range.startOffset);
+return pre.toString().length;}
+
+function setCursorTextOffset(offset){
+var walker=document.createTreeWalker(inputEl,NodeFilter.SHOW_TEXT,null,false);
+var count=0,node;
+while(node=walker.nextNode()){
+var len=node.nodeValue.length;
+if(count+len>=offset){
+var range=document.createRange();
+try{range.setStart(node,Math.min(offset-count,len));}catch(e){range.setStart(node,len);}
+range.collapse(true);
+var sel=window.getSelection();
+sel.removeAllRanges();
+sel.addRange(range);
+return;}
+count+=len;}
+var range=document.createRange();
+range.selectNodeContents(inputEl);
+range.collapse(false);
+var sel=window.getSelection();
+sel.removeAllRanges();
+sel.addRange(range);}
+
+function refresh(){
+if(refreshing)return;
+refreshing=true;
+try{
+var oldText=getInputText();
+var cursorBefore=(document.activeElement===inputEl)?getCursorTextOffset():lastOffset;
+var processed=processText(oldText);
+var html=renderInputHTML(processed);
+if(inputEl.innerHTML!==html){inputEl.innerHTML=html||'';}
+lastOffset=Math.min(cursorBefore,processed.length);
+if(document.activeElement===inputEl){setCursorTextOffset(lastOffset);}
+}catch(e){}
+refreshing=false;
+updatePredictions();}
+
+inputEl.addEventListener('input',function(){lastOffset=getCursorTextOffset();refresh();});
+inputEl.addEventListener('paste',function(){setTimeout(function(){refresh();},0);});
+inputEl.addEventListener('keydown',function(e){
+if(e.key==='Enter'&&!e.shiftKey){
+e.preventDefault();
+insertTextNode(document.createElement('br'));
+refresh();}
+else if(e.key===' '&&!e.ctrlKey&&!e.metaKey){
+e.preventDefault();
+insertTextNode(document.createTextNode(ZWSP));
+refresh();}});
+inputEl.addEventListener('keyup',function(){lastOffset=getCursorTextOffset();updatePredictions();});
+inputEl.addEventListener('click',function(){lastOffset=getCursorTextOffset();updatePredictions();});
+inputEl.addEventListener('mouseup',function(){lastOffset=getCursorTextOffset();updatePredictions();});
+inputEl.addEventListener('blur',function(){updatePredictions();});
+
+function insertTextNode(node){
+var sel=window.getSelection();
+if(!sel.rangeCount)return;
+var range=sel.getRangeAt(0);
+range.deleteContents();
+range.insertNode(node);
+range.setStartAfter(node);
+range.collapse(true);
+sel.removeAllRanges();
+sel.addRange(range);}
+
+function insertAtCursor(text){
+var plain=getInputText();
+var off=Math.min(lastOffset,plain.length);
+var newText=plain.slice(0,off)+text+plain.slice(off);
+setInputTextWithOffset(newText,off+text.length);
+updatePredictions();}
+
+function backspace(){
+var plain=getInputText();
+var off=Math.min(lastOffset,plain.length);
+if(off<=0)return;
+var newText=plain.slice(0,off-1)+plain.slice(off);
+setInputTextWithOffset(newText,off-1);
+updatePredictions();}
+
+kbEl.addEventListener('click',function(e){
+var btn=e.target.closest('.cc-key');
+if(!btn)return;
+var k=btn.getAttribute('data-k');
+var act=btn.getAttribute('data-act');
+if(act==='space'){insertAtCursor(ZWSP);return;}
+if(act==='back'){backspace();return;}
+if(act==='clear'){inputEl.innerHTML='';lastOffset=0;msgEl.textContent='';msgEl.className='cc-msg';predictEl.innerHTML='';return;}
+if(act==='balance'){doBalanceAll();return;}
+if(act==='burn'){doBurnAll();return;}
+if(act==='elec'){doElectrodeAll();return;}
+if(k!==null)insertAtCursor(k);});
+
+function doBalanceAll(){
+var text=unicodeToPlain(getInputText());
+var lines=text.split('\n');
+var newLines=[],ok=0,err=0;
+for(var i=0;i<lines.length;i++){
+var line=trimZW(lines[i]);
+if(!line){newLines.push('');continue;}
+if(line.indexOf('=')===-1&&line.indexOf('→')===-1&&line.indexOf('->')===-1){newLines.push(line);continue;}
+try{
+var res=balanceEquation(line);
+if(res&&res.coefs){
+var lft=res.left.map(function(f,j){var c=res.coefs[j];return(c!==1?c:'')+f;}).join(' + ');
+var rgt=res.right.map(function(f,j){var c=res.coefs[res.left.length+j];return(c!==1?c:'')+f;}).join(' + ');
+newLines.push(lft+' = '+rgt);ok++;}
+else{newLines.push(line);err++;}}
+catch(e){newLines.push(line);err++;}}
+setInputText(newLines.join('\n'));
+if(ok&&!err){msgEl.textContent='全部配平成功 ('+ok+')';msgEl.className='cc-msg ok';}
+else if(ok){msgEl.textContent='部分成功: '+ok+' 配平, '+err+' 失败';msgEl.className='cc-msg ok';}
+else{msgEl.textContent='无法配平';msgEl.className='cc-msg err';}
+updatePredictions();}
+
+function doBurnAll(){
+var text=unicodeToPlain(getInputText());
+var lines=text.split('\n');
+var newLines=[],ok=0,err=0;
+for(var i=0;i<lines.length;i++){
+var line=trimZW(lines[i]);
+if(!line){newLines.push('');continue;}
+if(line.indexOf('=')===-1&&line.indexOf('→')===-1&&line.indexOf('->')===-1){newLines.push(line);err++;continue;}
+try{
+var eqParts=line.split(/[=]|→|->/);
+var target=eqParts[0].split('+')[0].trim();
+var bal=predictCombustionBalanced(target);
+if(bal&&bal.coefs){
+var lft=bal.left.map(function(f,j){var c=bal.coefs[j];return(c!==1?c:'')+f;}).join(' + ');
+var rgt=bal.right.map(function(f,j){var c=bal.coefs[bal.left.length+j];return(c!==1?c:'')+f;}).join(' + ');
+newLines.push(lft+' = '+rgt);ok++;}
+else{newLines.push(line);err++;}}
+catch(e){newLines.push(line);err++;}}
+setInputText(newLines.join('\n'));
+if(ok&&!err){msgEl.textContent='燃烧预测并配平成功 ('+ok+')';msgEl.className='cc-msg ok';}
+else if(ok){msgEl.textContent='部分成功: '+ok+' 成功, '+err+' 失败';msgEl.className='cc-msg ok';}
+else{msgEl.textContent='燃烧失败：默认 O₂ 氧化剂；如为水等可用 F₂ 氧化剂';msgEl.className='cc-msg err';}
+updatePredictions();}
+
+function doElectrodeAll(){
+var text=unicodeToPlain(getInputText());
+var lines=text.split('\n');
+var out=[],ok=0,err=0;
+for(var i=0;i<lines.length;i++){
+var line=trimZW(lines[i]);
+if(!line){out.push('');continue;}
+if(line.indexOf('=')===-1&&line.indexOf('→')===-1&&line.indexOf('->')===-1){out.push(line);err++;continue;}
+try{
+var normalized=line.replace(/→|->/g,'=');
+var electrode=electrodeReaction(normalized);
+if(electrode){out.push(electrode[0]);out.push(electrode[1]);ok++;}
+else{out.push(line);err++;}}
+catch(e){out.push(line);err++;}}
+setInputText(out.join('\n'));
+if(ok&&!err){msgEl.textContent='电极反应拆分成功 ('+ok+')';msgEl.className='cc-msg ok';}
+else if(ok){msgEl.textContent='部分成功: '+ok+' 拆分, '+err+' 失败';msgEl.className='cc-msg ok';}
+else{msgEl.textContent='电极拆分失败：需含=的氧化还原方程式';msgEl.className='cc-msg err';}
+updatePredictions();}
+
+function getTextBeforeCursor(){
+var sel=window.getSelection();
+if(!sel.rangeCount)return getInputText();
+var range=sel.getRangeAt(0);
+if(!inputEl.contains(range.startContainer))return getInputText();
+var result='',found=false;
+function walk(node){
+if(found)return;
+if(node===range.startContainer){
+if(node.nodeType===3)result+=node.nodeValue.slice(0,range.startOffset);
+found=true;return;}
+if(node.nodeType===3)result+=node.nodeValue;
+else if(node.nodeName==='BR')result+='\n';
+else if(node.nodeType===1){
+for(var i=0;i<node.childNodes.length;i++){walk(node.childNodes[i]);if(found)return;}}}
+for(var i=0;i<inputEl.childNodes.length;i++){walk(inputEl.childNodes[i]);if(found)break;}
+return result;}
+
+function updatePredictions(){
+var before=getTextBeforeCursor();
+var lineStart=before.lastIndexOf('\n')+1;
+var currentLine=before.slice(lineStart);
+if(currentLine.indexOf('=')===-1){predictEl.innerHTML='';return;}
+var eqPos=currentLine.indexOf('=');
+var reactants=currentLine.slice(0,eqPos).trim();
+if(!reactants){predictEl.innerHTML='';return;}
+var groups=predictProductGroups(reactants);
+if(!groups.length){predictEl.innerHTML='';return;}
+var html='<span class="cc-predict-label">预测产物:</span>';
+groups.forEach(function(g){
+var display=g.map(function(f){
+var p=protect(f);
+var tokens=tokenizeRaw(p);
+return renderTokensToHTML(tokens);}).join('<span class="cc-plus">+</span>');
+var data=g.join('+');
+html+='<div class="cc-predict-btn" data-p="'+data+'">'+display+'</div>';});
+predictEl.innerHTML=html;}
+
+predictEl.addEventListener('click',function(e){
+var btn=e.target.closest('.cc-predict-btn');
+if(!btn)return;
+var p=btn.getAttribute('data-p');
+insertAtCursor(p);});
+
+refresh();
+}};}});
+
+App.init();
+</script></body></html>
